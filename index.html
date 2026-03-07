@@ -792,11 +792,41 @@
                     <input type="checkbox" id="meowExploreFuncs">
                     <span>explore_funcs <span style="color:#808080;font-size:11px;">&#8212; Aktifkan logging di dalam fungsi</span></span>
                 </label>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                    <label class="feature-toggle" style="flex-shrink:0;" title="Prevent beautifier tools from reconstructing readable code">
+                        <input type="checkbox" id="meowAntiBeautifier" checked>
+                        <span>anti_beautifier</span>
+                    </label>
+                    <select id="meowABMode" style="flex:1;min-width:180px;">
+                        <option value="weak">Weak &#8212; Semicolon bomb + long names</option>
+                        <option value="normal" selected>Normal &#8212; + Nested do-end + mixed lines</option>
+                        <option value="smooth">Smooth &#8212; + Fake newline markers + string split</option>
+                        <option value="strong">Strong &#8212; + Token flood + bracket maze</option>
+                        <option value="extrastrong">Extra Strong &#8212; + Whitespace exploit + operator chain</option>
+                        <option value="aggressive">Aggressive &#8212; Semua layer maksimum</option>
+                    </select>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px;">
+                    <label class="feature-toggle" style="flex-shrink:0;" title="Mask obfuscator fingerprints">
+                        <input type="checkbox" id="meowAntiDetect" checked>
+                        <span>anti_detect</span>
+                    </label>
+                    <select id="meowADMode" style="flex:1;min-width:180px;">
+                        <option value="weak">Weak &#8212; Fake tool comment decoy</option>
+                        <option value="normal" selected>Normal &#8212; + Foreign naming patterns</option>
+                        <option value="smooth">Smooth &#8212; + Foreign sentinel strings</option>
+                        <option value="strong">Strong &#8212; + XOR-encoded sentinel keys</option>
+                        <option value="extrastrong">Extra Strong &#8212; + Bytecode header spoof</option>
+                        <option value="aggressive">Aggressive &#8212; Semua layer + multi-tool fingerprint noise</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="feature-desc" id="meowDesc">
             Meow Al memblokir operasi hooking seperti <code style="color:#9cdcfe">repeat</code>, <code style="color:#9cdcfe">while</code>, <code style="color:#9cdcfe">if</code>, dan operator perbandingan <code style="color:#9cdcfe">&gt; &lt; &gt;= &lt;= == ~=</code>.<br>
-            Aktifkan sub-opsi sesuai kebutuhan &#8212; masing-masing menambah lapisan deteksi dan blocking yang berbeda.
+            Aktifkan sub-opsi sesuai kebutuhan &#8212; masing-masing menambah lapisan deteksi dan blocking yang berbeda.<br>
+            <b>anti_beautifier</b>: Sisipkan pola yang merusak output beautifier/formatter (line-length bomb, misleading indent marker, zero-width token) sehingga kode tidak bisa diformat ulang menjadi readable.<br>
+            <b>anti_detect</b>: Hapus/samarkan fingerprint obfuscator (header komentar, pola variabel khas, string sentinel unik) sehingga tool deteksi tidak bisa mengidentifikasi obfuscator yang digunakan.
         </div>
     </div>
 
@@ -1345,6 +1375,16 @@
             }
         });
 
+
+        // ── Meow Al: anti_beautifier / anti_detect mode listeners ──────────────
+        document.getElementById('meowAntiBeautifier').addEventListener('change', function() {
+            document.getElementById('meowABMode').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('meowABMode').style.pointerEvents = this.checked ? '' : 'none';
+        });
+        document.getElementById('meowAntiDetect').addEventListener('change', function() {
+            document.getElementById('meowADMode').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('meowADMode').style.pointerEvents = this.checked ? '' : 'none';
+        });
 
         // ── Aggressive Optimizations listener ──────────────────────────────────
         document.getElementById('enableAO').addEventListener('change', function() {
@@ -4982,6 +5022,204 @@ function buildAsciiSimple(codes) {
         }
 
         if (useComments) out += '    -- [Meow Al] init complete\n';
+
+        // ── anti_beautifier: Poison beautifier output (mode-aware) ─────────
+        if (!!o.anti_beautifier) {
+            var abMode = o.abMode || 'normal';
+            var doABNorm  = (abMode !== 'weak');
+            var doABSmth  = (abMode === 'smooth' || abMode === 'strong' || abMode === 'extrastrong' || abMode === 'aggressive');
+            var doABStrg  = (abMode === 'strong' || abMode === 'extrastrong' || abMode === 'aggressive');
+            var doABExtra = (abMode === 'extrastrong' || abMode === 'aggressive');
+            var doABAggr  = (abMode === 'aggressive');
+
+            if (useComments) out += '    -- anti_beautifier: layout poison [' + abMode + ']\n';
+
+            // ── WEAK: Semicolon bomb + long names ───────────────────────
+            var longA = rv();
+            var longSeed = ri(1000, 9999);
+            out += '    local ' + longA + '_' + rv() + '_' + rv() + '_' + rv()
+                 + ' = (' + IE(longSeed) + ')\n';
+            out += '    _ = ' + longA + '_' + rv() + '_' + rv() + '_' + rv() + ' or ('
+                 + IE(longSeed) + ')\n';
+            var scV = rv(); var scN = abMode === 'aggressive' ? 8 : abMode === 'extrastrong' ? 6 : abMode === 'strong' ? 5 : ri(2, 4);
+            out += '    local ' + scV + ' = (' + IE(ri(1,9)) + ')';
+            for (var sci = 0; sci < scN; sci++) out += ';';
+            out += '\n    _ = ' + scV + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            // ── NORMAL: + Nested do-end + mixed lines ────────────────────
+            if (doABNorm) {
+                var dnDepth = abMode === 'aggressive' ? 7 : abMode === 'extrastrong' ? 6 : abMode === 'strong' ? 5 : ri(3, 4);
+                for (var dni = 0; dni < dnDepth; dni++) out += '    ' + 'do  '.repeat(dni + 1) + '\n';
+                var dnV = rv();
+                out += '    ' + '  '.repeat(dnDepth) + 'local ' + dnV + ' = (' + IE(ri(1,9)) + ')\n';
+                out += '    ' + '  '.repeat(dnDepth) + '_ = ' + dnV + '\n';
+                for (var dni2 = dnDepth - 1; dni2 >= 0; dni2--) out += '    ' + 'end  '.repeat(dni2 + 1) + '\n';
+                var mixA = rv(); var mixB = rv();
+                out += '    local ' + mixA + ' = (' + IE(ri(1,9)) + '); local ' + mixB
+                     + ' = (' + IE(ri(1,9)) + '); _ = ' + mixA + '; _ = ' + mixB + '\n';
+                out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            }
+
+            // ── SMOOTH: + Fake newline marker + string split ─────────────
+            if (doABSmth) {
+                // String split: a string literal split across multiple concat ops
+                // so formatter can't tell where it "ends"
+                var ssV = rv(); var ssChunks = ri(3, 6);
+                out += '    local ' + ssV + ' = ';
+                var ssStr = '';
+                for (var ssi = 0; ssi < ssChunks; ssi++) {
+                    var chunk = '';
+                    for (var ssc = 0; ssc < ri(2, 5); ssc++) chunk += String.fromCharCode(ri(65, 90));
+                    ssStr += (ssi > 0 ? '..' : '') + '"' + chunk + '"';
+                }
+                out += ssStr + '\n    _ = ' + ssV + '\n';
+                // Fake newline: \n inside a string to confuse line-counter
+                var fnV = rv();
+                out += '    local ' + fnV + ' = "\\n\\n\\n"\n    _ = ' + fnV + '\n';
+                out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            }
+
+            // ── STRONG: + Token flood + bracket maze ─────────────────────
+            if (doABStrg) {
+                // Token flood: many short statements on same line
+                var tfLine = '';
+                var tfN = abMode === 'aggressive' ? 10 : 6;
+                for (var tfi = 0; tfi < tfN; tfi++) {
+                    var tfV = rv();
+                    tfLine += 'local ' + tfV + '=(' + IE(ri(1,9)) + ');';
+                }
+                out += '    ' + tfLine + '\n';
+                // Bracket maze: deeply nested arithmetic
+                var bmV = rv(); var bmDepth = abMode === 'aggressive' ? 8 : 5;
+                var bmExpr = IE(ri(1,9));
+                for (var bmi = 0; bmi < bmDepth; bmi++) bmExpr = '(' + bmExpr + '+(' + IE(ri(1,9)) + '))';
+                out += '    local ' + bmV + ' = ' + bmExpr + '\n    _ = ' + bmV + '\n';
+                out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            }
+
+            // ── EXTRA STRONG: + Whitespace exploit + operator chain ───────
+            if (doABExtra) {
+                // Operator chain: long arithmetic chain that a formatter must wrap
+                var ocV = rv(); var ocLen = abMode === 'aggressive' ? 14 : 8;
+                var ocExpr = IE(ri(1,9));
+                for (var oci = 0; oci < ocLen; oci++) {
+                    var ocOp = ['+','-','*'][oci % 3];
+                    ocExpr += ocOp + '(' + IE(ri(1,9)) + ')';
+                }
+                out += '    local ' + ocV + ' = ' + ocExpr + '\n    _ = ' + ocV + '\n';
+                out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            }
+
+            // ── AGGRESSIVE: All previous + maximum repetition ─────────────
+            if (doABAggr) {
+                // Extra pass: repeat weak+normal layers again for maximum noise
+                for (var agpi = 0; agpi < 3; agpi++) {
+                    var agV = rv(); var agSc = ri(4, 8);
+                    out += '    local ' + agV + ' = (' + IE(ri(1,9)) + ')';
+                    for (var ags = 0; ags < agSc; ags++) out += ';';
+                    out += '\n    _ = ' + agV + '\n';
+                }
+                out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            }
+        }
+
+        // ── anti_detect: Mask obfuscator fingerprint (mode-aware) ──────────
+        if (!!o.anti_detect) {
+            var adMode = o.adMode || 'normal';
+            var doADNorm  = (adMode !== 'weak');
+            var doADSmth  = (adMode === 'smooth' || adMode === 'strong' || adMode === 'extrastrong' || adMode === 'aggressive');
+            var doADStrg  = (adMode === 'strong' || adMode === 'extrastrong' || adMode === 'aggressive');
+            var doADExtra = (adMode === 'extrastrong' || adMode === 'aggressive');
+            var doADAggr  = (adMode === 'aggressive');
+
+            if (useComments) out += '    -- anti_detect: fingerprint masking [' + adMode + ']\n';
+
+            // ── WEAK: Fake tool comment decoy ────────────────────────────
+            var fakeTools = [
+                '-- Obfuscated with LuaObfuscator v2.1.0',
+                '-- Protected by lua-obfuscator (https://luaobfuscator.com)',
+                '-- Obfuscated by Prometheus Obfuscator',
+                '-- IronBrew2 Protected Script',
+                '-- PSU Obfuscated',
+                '-- Bytecode compiled by LuaC 5.1',
+            ];
+            var nDecoys = adMode === 'aggressive' ? 4 : adMode === 'extrastrong' ? 3 : 1;
+            for (var dci = 0; dci < nDecoys; dci++) {
+                out += '    ' + fakeTools[ri(0, fakeTools.length - 1)] + '\n';
+            }
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            // ── NORMAL: + Foreign naming patterns ────────────────────────
+            if (doADNorm) {
+                var ibN = adMode === 'aggressive' ? 4 : adMode === 'strong' ? 3 : 2;
+                for (var ibi = 0; ibi < ibN; ibi++) {
+                    var ibPfx  = '_0x' + ri(0x1000, 0xffff).toString(16);
+                    var promPfx = ['O0O', 'I1l', 'lI1', 'O0l', 'Il1O', 'OIl'][ri(0,5)];
+                    out += '    local ' + ibPfx + ' = (' + IE(ri(1,9)) + ')\n';
+                    out += '    local ' + promPfx + rv() + ' = (' + IE(ri(1,9)) + ')\n';
+                    out += '    _ = ' + ibPfx + '\n';
+                }
+                out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            }
+
+            // ── SMOOTH: + Foreign sentinel strings ───────────────────────
+            if (doADSmth) {
+                var sentinels = [
+                    '-- {ByteTable}', '-- [Prometheus]', '-- Luraph Obfuscator',
+                    '-- [IronBrew2]', '-- [[Obfuscated]]', '-- Compiled by luac',
+                ];
+                var nSent = adMode === 'aggressive' ? 4 : adMode === 'extrastrong' ? 3 : 2;
+                for (var si2 = 0; si2 < nSent; si2++) {
+                    out += '    ' + sentinels[ri(0, sentinels.length - 1)] + '\n';
+                }
+                out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            }
+
+            // ── STRONG: + XOR-encoded sentinel keys ──────────────────────
+            if (doADStrg) {
+                var nXor = adMode === 'aggressive' ? 4 : 2;
+                for (var xi = 0; xi < nXor; xi++) {
+                    var skKey = rv(); var skXK = ri(1, 127);
+                    var skPlain = '__MEOW_' + ri(100,999) + '__';
+                    var skEncoded = skPlain.split('').map(function(c) {
+                        var enc = c.charCodeAt(0) ^ skXK;
+                        return 'string.char(bit32.bxor(' + IE(enc) + ',(' + IE(skXK) + ')))';
+                    }).join('..');
+                    out += '    local ' + skKey + ' = (' + skEncoded + ')\n';
+                    out += '    _ = ' + skKey + '\n';
+                }
+                out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            }
+
+            // ── EXTRA STRONG: + Bytecode header spoof ────────────────────
+            if (doADExtra) {
+                // Inject fake Lua bytecode magic bytes as a string literal comment
+                // \27Lua is the Lua 5.1 bytecode magic; having it confuses binary scanners
+                var bhV = rv();
+                out += '    local ' + bhV + ' = string.char(27,76,117,97,81,0)\n';
+                out += '    _ = ' + bhV + '\n';
+                out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            }
+
+            // ── AGGRESSIVE: + Multi-tool fingerprint noise ────────────────
+            if (doADAggr) {
+                // Inject patterns from 3 different obfuscators simultaneously
+                var multiTools = [
+                    ['_IB_',    'IronBrew2'],
+                    ['_PROM_',  'Prometheus'],
+                    ['_LURAPH_','Luraph'],
+                ];
+                for (var mti = 0; mti < multiTools.length; mti++) {
+                    var mtPfx = multiTools[mti][0];
+                    var mtV = rv();
+                    out += '    local ' + mtPfx + mtV + ' = (' + IE(ri(1,9)) + ')\n';
+                    out += '    _ = ' + mtPfx + mtV + '\n';
+                }
+                out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            }
+        }
+
         out += '  end\n';
         out += jBlock(2 * JUNK_MULT);
         return out;
@@ -6038,6 +6276,10 @@ function buildAsciiSimple(codes) {
                 minifier:     document.getElementById('meowMinifier').checked,
                 spyexeconly:  document.getElementById('meowSpyExecOnly').checked,
                 explore_funcs: document.getElementById('meowExploreFuncs').checked,
+                anti_beautifier: document.getElementById('meowAntiBeautifier').checked,
+                abMode:          document.getElementById('meowABMode').value,
+                anti_detect:     document.getElementById('meowAntiDetect').checked,
+                adMode:          document.getElementById('meowADMode').value,
             };
             parts.push(buildMeowAl(meowOpts, JUNK_MULT));
             parts.push(jBlock(3 * JUNK_MULT));
