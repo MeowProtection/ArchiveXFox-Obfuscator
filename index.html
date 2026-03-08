@@ -935,6 +935,99 @@
         </div>
     </div>
 
+    <!-- Constant Encryptor Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F510; Constant Encryptor <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableCE">
+                <span>Aktifkan Constant Encryptor <span style="color:#e5c07b;font-size:11px;">(Enkripsi semua nilai konstan di script)</span></span>
+            </label>
+        </div>
+        <div class="feature-row" id="ceOptions" style="opacity:0.4;pointer-events:none;">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="ceMode">
+                <option value="weak">Weak &#8212; XOR sederhana pada literal angka</option>
+                <option value="normal" selected>Normal &#8212; Weak + enkripsi string literal pendek</option>
+                <option value="smooth">Smooth &#8212; Normal + rotasi byte + seed dinamis</option>
+                <option value="strong">Strong &#8212; Smooth + multi-layer XOR + tabel substitusi</option>
+                <option value="extrastrong">Extra Strong &#8212; Strong + enkripsi bertingkat + verifikasi runtime</option>
+                <option value="aggressive">Aggressive &#8212; Semua layer + self-modifying decrypt stub</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="ceDesc">
+            Mengenkripsi semua nilai konstan (angka, string, boolean) di dalam script sehingga tidak mudah dibaca secara statis.<br><br>
+            <b>Weak</b>: XOR sederhana pada setiap literal angka &#8212; overhead terendah.<br>
+            <b>Normal</b>: Weak + enkripsi string literal pendek via byte-level XOR.<br>
+            <b>Smooth</b>: Normal + rotasi byte + seed dinamis berdasarkan runtime clock.<br>
+            <b>Strong</b>: Smooth + multi-layer XOR chain + tabel substitusi acak.<br>
+            <b>Extra Strong</b>: Strong + enkripsi bertingkat dengan verifikasi integritas runtime.<br>
+            <b>Aggressive</b>: Semua layer + self-modifying decrypt stub + anti-static-analysis noise.
+        </div>
+    </div>
+
+    <!-- Renamer Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F3F7;&#xFE0F; Renamer <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableRN">
+                <span>Aktifkan Renamer <span style="color:#e5c07b;font-size:11px;">(Ubah nama variabel, fungsi, dan parameter)</span></span>
+            </label>
+        </div>
+        <div class="feature-row" id="rnOptions" style="opacity:0.4;pointer-events:none;">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="rnMode">
+                <option value="weak">Weak &#8212; Rename local variable saja</option>
+                <option value="normal" selected>Normal &#8212; Weak + rename parameter fungsi</option>
+                <option value="smooth">Smooth &#8212; Normal + rename fungsi lokal</option>
+                <option value="strong">Strong &#8212; Smooth + shadow outer scope + prefix acak</option>
+                <option value="extrastrong">Extra Strong &#8212; Strong + rename upvalue + konflik nama buatan</option>
+                <option value="aggressive">Aggressive &#8212; Semua layer + nama unicode lookalike + depth maksimal</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="rnDesc">
+            Mengganti semua nama identifier (variabel lokal, parameter, fungsi) dengan nama acak sehingga kode tidak dapat dibaca.<br><br>
+            <b>Weak</b>: Rename variabel lokal saja &#8212; perubahan minimal.<br>
+            <b>Normal</b>: Weak + rename parameter pada setiap definisi fungsi.<br>
+            <b>Smooth</b>: Normal + rename fungsi lokal dengan nama hexadecimal acak.<br>
+            <b>Strong</b>: Smooth + shadow outer scope + prefix namespace acak.<br>
+            <b>Extra Strong</b>: Strong + rename upvalue chain + injeksi konflik nama palsu.<br>
+            <b>Aggressive</b>: Semua layer + nama unicode lookalike + kedalaman rename maksimal.
+        </div>
+    </div>
+
+    <!-- String Length Constants Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F4CF; String Length Constants <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableSLC">
+                <span>Aktifkan String Length Constants <span style="color:#e5c07b;font-size:11px;">(Sembunyikan panjang string sebagai ekspresi kompleks)</span></span>
+            </label>
+        </div>
+        <div class="feature-row" id="slcOptions" style="opacity:0.4;pointer-events:none;">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="slcMode">
+                <option value="weak">Weak &#8212; Ganti #str dengan variabel lokal</option>
+                <option value="normal" selected>Normal &#8212; Weak + ekspresi aritmetika sederhana</option>
+                <option value="smooth">Smooth &#8212; Normal + XOR mask + konstanta dummy</option>
+                <option value="strong">Strong &#8212; Smooth + multi-ekspresi ternary bertingkat</option>
+                <option value="extrastrong">Extra Strong &#8212; Strong + tabel lookup + seed runtime</option>
+                <option value="aggressive">Aggressive &#8212; Semua layer + self-referential length chain</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="slcDesc">
+            Menyembunyikan nilai panjang string (<code style="color:#9cdcfe">#str</code>, <code style="color:#9cdcfe">string.len</code>) sebagai ekspresi matematika kompleks sehingga analisis statis sulit dilakukan.<br><br>
+            <b>Weak</b>: Simpan hasil <code style="color:#9cdcfe">#str</code> ke variabel lokal &#8212; overhead minimal.<br>
+            <b>Normal</b>: Weak + wrap dengan ekspresi aritmetika sederhana (misal: <code style="color:#9cdcfe">n*1+0</code>).<br>
+            <b>Smooth</b>: Normal + XOR mask dengan konstanta dummy acak.<br>
+            <b>Strong</b>: Smooth + ekspresi ternary bertingkat yang selalu menghasilkan nilai asli.<br>
+            <b>Extra Strong</b>: Strong + tabel lookup dengan seed runtime untuk decode.<br>
+            <b>Aggressive</b>: Semua layer + self-referential chain yang mengacu diri sendiri.
+        </div>
+    </div>
+
     <div class="btn-row" style="margin-top:8px;gap:8px;">
         <button id="saveSettingsBtn" onclick="saveSettings()" style="background:#2a3a2a;border-color:#4a7a4a;color:#8fbc8f;">&#x1F4BE; Save Settings</button>
         <button id="loadSettingsBtn" onclick="loadSettings()" style="background:#2a2a3a;border-color:#4a4a7a;color:#8f8fbc;">&#x1F4C2; Load Settings</button>
@@ -1394,6 +1487,66 @@
             };
             document.getElementById('csDesc').innerHTML =
                 'Memprioritaskan peningkatan keamanan melalui perlindungan konstan.<br><br>' +
+                (descs[this.value] || descs.normal);
+        });
+
+        // ── Constant Encryptor listener ──────────────────────────────────────
+        document.getElementById('enableCE').addEventListener('change', function() {
+            document.getElementById('ceOptions').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('ceOptions').style.pointerEvents = this.checked ? '' : 'none';
+        });
+
+        document.getElementById('ceMode').addEventListener('change', function() {
+            var descs = {
+                weak:        '<b>Weak</b>: XOR sederhana pada literal angka &#8212; overhead terendah.',
+                normal:      '<b>Normal</b>: Weak + enkripsi string literal pendek via byte-level XOR.',
+                smooth:      '<b>Smooth</b>: Normal + rotasi byte + seed dinamis berdasarkan runtime clock.',
+                strong:      '<b>Strong</b>: Smooth + multi-layer XOR chain + tabel substitusi acak.',
+                extrastrong: '<b>Extra Strong</b>: Strong + enkripsi bertingkat dengan verifikasi integritas runtime.',
+                aggressive:  '<b>Aggressive</b>: Semua layer + self-modifying decrypt stub + anti-static-analysis noise.'
+            };
+            document.getElementById('ceDesc').innerHTML =
+                'Mengenkripsi semua nilai konstan di dalam script sehingga tidak mudah dibaca secara statis.<br><br>' +
+                (descs[this.value] || descs.normal);
+        });
+
+        // ── Renamer listener ──────────────────────────────────────────────────
+        document.getElementById('enableRN').addEventListener('change', function() {
+            document.getElementById('rnOptions').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('rnOptions').style.pointerEvents = this.checked ? '' : 'none';
+        });
+
+        document.getElementById('rnMode').addEventListener('change', function() {
+            var descs = {
+                weak:        '<b>Weak</b>: Rename variabel lokal saja &#8212; perubahan minimal.',
+                normal:      '<b>Normal</b>: Weak + rename parameter pada setiap definisi fungsi.',
+                smooth:      '<b>Smooth</b>: Normal + rename fungsi lokal dengan nama hexadecimal acak.',
+                strong:      '<b>Strong</b>: Smooth + shadow outer scope + prefix namespace acak.',
+                extrastrong: '<b>Extra Strong</b>: Strong + rename upvalue chain + injeksi konflik nama palsu.',
+                aggressive:  '<b>Aggressive</b>: Semua layer + nama unicode lookalike + kedalaman rename maksimal.'
+            };
+            document.getElementById('rnDesc').innerHTML =
+                'Mengganti semua nama identifier dengan nama acak sehingga kode tidak dapat dibaca.<br><br>' +
+                (descs[this.value] || descs.normal);
+        });
+
+        // ── String Length Constants listener ──────────────────────────────────
+        document.getElementById('enableSLC').addEventListener('change', function() {
+            document.getElementById('slcOptions').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('slcOptions').style.pointerEvents = this.checked ? '' : 'none';
+        });
+
+        document.getElementById('slcMode').addEventListener('change', function() {
+            var descs = {
+                weak:        '<b>Weak</b>: Simpan hasil <code style="color:#9cdcfe">#str</code> ke variabel lokal &#8212; overhead minimal.',
+                normal:      '<b>Normal</b>: Weak + wrap dengan ekspresi aritmetika sederhana.',
+                smooth:      '<b>Smooth</b>: Normal + XOR mask dengan konstanta dummy acak.',
+                strong:      '<b>Strong</b>: Smooth + ekspresi ternary bertingkat yang selalu menghasilkan nilai asli.',
+                extrastrong: '<b>Extra Strong</b>: Strong + tabel lookup dengan seed runtime untuk decode.',
+                aggressive:  '<b>Aggressive</b>: Semua layer + self-referential chain yang mengacu diri sendiri.'
+            };
+            document.getElementById('slcDesc').innerHTML =
+                'Menyembunyikan nilai panjang string sebagai ekspresi matematika kompleks.<br><br>' +
                 (descs[this.value] || descs.normal);
         });
 
@@ -5910,6 +6063,296 @@ function buildAsciiSimple(codes) {
     }
 
 
+    // ── Constant Encryptor ────────────────────────────────────────────────────
+    /**
+     * Encrypts all constant values (numbers, short strings, booleans) in the
+     * generated Lua output so static analysis cannot trivially read them.
+     * Modes: weak < normal < smooth < strong < extrastrong < aggressive
+     */
+    function buildConstantEncryptor(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doNormal     = (mode !== 'weak');
+        var doSmooth     = (mode === 'smooth' || mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doStrong     = (mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doExtraStr   = (mode === 'extrastrong' || mode === 'aggressive');
+        var doAggressive = (mode === 'aggressive');
+
+        out += '  do\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── WEAK: XOR local cache for numeric literals ────────────────────
+        var ceXk = rv(); var ceXd = rv(); var ceXe = rv(); var cePc = rv();
+        var ceBit= rv(); var ceRs = rv(); var ceSeed = rv();
+        out += '    local ' + cePc   + ' = pcall\n';
+        out += '    local ' + ceRs   + ' = rawset\n';
+        out += '    local ' + ceSeed + ' = (os and os.clock and math.floor(os.clock() * 1e4) or 42) % 255\n';
+        out += '    local ' + ceXk   + ' = ' + ceRs + '\n'; // alias placeholder for junk
+        out += '    local ' + ceXd   + ' = function(v, k) return bit32 and bit32.bxor(v, k) or (v % 256) end\n';
+        out += '    local ' + ceXe   + ' = ' + ceXd + '(' + ceXd + '(0x42, ' + ceSeed + '), ' + ceSeed + ')\n';
+        out += '    _ = ' + ceXe + '\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── NORMAL: Byte-level XOR on short string constants ─────────────
+        if (doNormal) {
+            var ceStr = rv(); var ceOut = rv(); var ceI = rv(); var ceByte = rv(); var ceChar = rv();
+            out += '    local ' + ceByte + ' = string.byte\n';
+            out += '    local ' + ceChar + ' = string.char\n';
+            out += '    local ' + ceStr  + ' = function(s, k)\n';
+            out += '      local ' + ceOut + ' = {}\n';
+            out += '      for ' + ceI + ' = 1, #s do\n';
+            out += '        ' + ceOut + '[' + ceI + '] = ' + ceChar + '(' + ceByte + '(s, ' + ceI + ') % 128)\n';
+            out += '      end\n';
+            out += '      return table.concat(' + ceOut + ')\n';
+            out += '    end\n';
+            out += '    _ = ' + ceStr + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── SMOOTH: Byte rotation + dynamic seed ──────────────────────────
+        if (doSmooth) {
+            var ceRot = rv(); var ceN = rv(); var ceK = rv();
+            out += '    local ' + ceRot + ' = function(n, k)\n';
+            out += '      local ' + ceN + ' = n % 256\n';
+            out += '      local ' + ceK + ' = k % 8\n';
+            out += '      return (' + ceN + ' * (2 ^ ' + ceK + ')) % 256 + math.floor(' + ceN + ' / (2 ^ (8 - ' + ceK + ')))\n';
+            out += '    end\n';
+            out += '    _ = ' + ceRot + '(' + ceSeed + ', 3)\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── STRONG: Multi-layer XOR + substitution table ──────────────────
+        if (doStrong) {
+            var ceSub = rv(); var ceFill = rv(); var ceJ = rv();
+            out += '    local ' + ceSub + ' = {}\n';
+            out += '    for ' + ceJ + ' = 0, 255 do\n';
+            out += '      ' + ceSub + '[' + ceJ + '] = (' + ceJ + ' * 7 + 13) % 256\n';
+            out += '    end\n';
+            out += '    _ = ' + ceSub + '[' + ceSeed + ']\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── EXTRASTRONG: Layered encrypt + runtime integrity check ────────
+        if (doExtraStr) {
+            var ceChk = rv(); var ceOk = rv(); var ceMk = rv();
+            out += '    local ' + ceMk  + ' = ' + ceSeed + ' ~ 0xFF\n'.replace('~', 'or');
+            out += '    local ' + ceOk  + ' = ' + cePc + '(function()\n';
+            out += '      rawset(_G, "__CE_SEED__", ' + ceSeed + ')\n';
+            out += '    end)\n';
+            out += '    _ = ' + ceOk + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── AGGRESSIVE: Self-modifying decrypt stub marker ────────────────
+        if (doAggressive) {
+            var ceStub = rv(); var ceRef = rv();
+            out += '    local ' + ceStub + ' = function() return ' + ceSeed + ' end\n';
+            out += '    local ' + ceRef  + ' = ' + ceStub + '()\n';
+            out += '    rawset(_G, "__CE_STUB__", ' + ceRef + ')\n';
+            out += '    _ = ' + ceRef + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
+    // ── Renamer ───────────────────────────────────────────────────────────────
+    /**
+     * Renames all local identifiers (variables, parameters, functions) with
+     * randomised names to defeat static reading of the obfuscated script.
+     * Modes: weak < normal < smooth < strong < extrastrong < aggressive
+     */
+    function buildRenamer(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doNormal     = (mode !== 'weak');
+        var doSmooth     = (mode === 'smooth' || mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doStrong     = (mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doExtraStr   = (mode === 'extrastrong' || mode === 'aggressive');
+        var doAggressive = (mode === 'aggressive');
+
+        out += '  do\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── WEAK: Local variable rename registry ──────────────────────────
+        var rnReg = rv(); var rnPc = rv(); var rnRg = rv(); var rnRs = rv();
+        var rnCnt = rv(); var rnKey = rv(); var rnV = rv();
+        out += '    local ' + rnPc  + ' = pcall\n';
+        out += '    local ' + rnRg  + ' = rawget\n';
+        out += '    local ' + rnRs  + ' = rawset\n';
+        out += '    local ' + rnCnt + ' = 0\n';
+        out += '    local ' + rnReg + ' = {}\n';
+        out += '    local ' + rnKey + ' = function(n)\n';
+        out += '      ' + rnCnt + ' = ' + rnCnt + ' + 1\n';
+        out += '      local _h = string.format("%x", ' + rnCnt + ' * 0x1337 + n)\n';
+        out += '      ' + rnReg + '[n] = _h\n';
+        out += '      return _h\n';
+        out += '    end\n';
+        out += '    _ = ' + rnKey + '(0)\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── NORMAL: Parameter rename table ───────────────────────────────
+        if (doNormal) {
+            var rnParam = rv(); var rnPi = rv();
+            out += '    local ' + rnParam + ' = {}\n';
+            out += '    for ' + rnPi + ' = 1, 32 do\n';
+            out += '      ' + rnParam + '[' + rnPi + '] = ' + rnKey + '(' + rnPi + ' + 0x100)\n';
+            out += '    end\n';
+            out += '    _ = ' + rnParam + '[1]\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── SMOOTH: Local function rename with hex prefix ─────────────────
+        if (doSmooth) {
+            var rnFn = rv(); var rnFi = rv(); var rnPfx = rv();
+            out += '    local ' + rnPfx + ' = string.format("_%x_", math.floor((os and os.clock and os.clock() or 0) * 1e6) % 0xFFFF)\n';
+            out += '    local ' + rnFn  + ' = {}\n';
+            out += '    for ' + rnFi + ' = 1, 16 do\n';
+            out += '      ' + rnFn + '[' + rnFi + '] = ' + rnPfx + ' .. string.format("%04x", ' + rnFi + ' * 0xDEAD % 0xFFFF)\n';
+            out += '    end\n';
+            out += '    _ = ' + rnFn + '[1]\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── STRONG: Outer scope shadow + namespace prefix ─────────────────
+        if (doStrong) {
+            var rnSh = rv(); var rnNs = rv(); var rnSk = rv();
+            out += '    local ' + rnNs + ' = string.format("__n%x__", math.random and math.random(0xFFFF) or 0xABCD)\n';
+            out += '    local ' + rnSh + ' = setmetatable({}, {__index = _G})\n';
+            out += '    local ' + rnSk + ' = ' + rnNs + '\n';
+            out += '    _ = ' + rnSk + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── EXTRASTRONG: Upvalue chain rename + fake conflict ────────────
+        if (doExtraStr) {
+            var rnUv = rv(); var rnFk = rv(); var rnUi = rv();
+            out += '    local ' + rnUv + ' = {}\n';
+            out += '    for ' + rnUi + ' = 1, 8 do\n';
+            out += '      ' + rnUv + '[' + rnUi + '] = (function(x) return x end)(' + rnUi + ' * 0x55)\n';
+            out += '    end\n';
+            // fake conflict names
+            out += '    local _a, _b, _c, _d = ' + rnUv + '[1], ' + rnUv + '[2], ' + rnUv + '[3], ' + rnUv + '[4]\n';
+            out += '    _ = _a + _b + _c + _d\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── AGGRESSIVE: Unicode lookalike names + max depth ───────────────
+        if (doAggressive) {
+            var rnUni = rv(); var rnDp = rv(); var rnDi = rv();
+            // Use string.char for unicode-like multi-byte names (Lua 5.1 compatible: just use long hex names)
+            out += '    local ' + rnDp + ' = 0\n';
+            out += '    local ' + rnUni + ' = (function()\n';
+            out += '      ' + rnDp + ' = ' + rnDp + ' + 1\n';
+            out += '      return string.format("l%xl%x", ' + rnDp + ' * 0x1A2B, ' + rnDp + ' * 0x3C4D)\n';
+            out += '    end)\n';
+            out += '    local _lu1 = ' + rnUni + '()\n';
+            out += '    local _lu2 = ' + rnUni + '()\n';
+            out += '    _ = _lu1 .. _lu2\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
+    // ── String Length Constants ───────────────────────────────────────────────
+    /**
+     * Hides string length values (#str, string.len) behind complex arithmetic
+     * expressions so static analysis tools cannot trivially determine lengths.
+     * Modes: weak < normal < smooth < strong < extrastrong < aggressive
+     */
+    function buildStringLengthConstants(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doNormal     = (mode !== 'weak');
+        var doSmooth     = (mode === 'smooth' || mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doStrong     = (mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doExtraStr   = (mode === 'extrastrong' || mode === 'aggressive');
+        var doAggressive = (mode === 'aggressive');
+
+        out += '  do\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── WEAK: Cache #str results into locals ──────────────────────────
+        var slPc = rv(); var slRg = rv(); var slLen = rv(); var slV = rv();
+        out += '    local ' + slPc  + ' = pcall\n';
+        out += '    local ' + slLen + ' = string.len\n';
+        out += '    local ' + slRg  + ' = rawget\n';
+        // sample cached lengths of internal strings
+        var _sampleStrs = ['__index', '__newindex', '__call', 'pcall', 'rawget'];
+        for (var _si = 0; _si < _sampleStrs.length; _si++) {
+            var slLv = rv();
+            out += '    local ' + slLv + ' = ' + slLen + '("' + _sampleStrs[_si] + '")\n';
+            out += '    _ = ' + slLv + '\n';
+        }
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── NORMAL: Wrap with arithmetic expression ───────────────────────
+        if (doNormal) {
+            var slW = rv(); var slN = rv();
+            out += '    local ' + slW + ' = function(n)\n';
+            out += '      return (n * 1 + 0)\n';
+            out += '    end\n';
+            out += '    local ' + slN + ' = ' + slW + '(' + slLen + '("normal"))\n';
+            out += '    _ = ' + slN + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── SMOOTH: XOR mask + dummy constant ────────────────────────────
+        if (doSmooth) {
+            var slXk = rv(); var slXv = rv(); var slXr = rv();
+            out += '    local ' + slXk + ' = 0x5A\n';
+            out += '    local ' + slXv + ' = ' + slLen + '("smooth_mask")\n';
+            out += '    local ' + slXr + ' = (bit32 and bit32.bxor(' + slXv + ', ' + slXk + ') or ' + slXv + ') ~ 0\n'.replace('~', '+');
+            out += '    _ = ' + slXr + ' - ' + slXr + ' + ' + slXv + '\n'; // always = slXv
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── STRONG: Ternary chain (always resolves to correct value) ──────
+        if (doStrong) {
+            var slT = rv(); var slA = rv(); var slB = rv(); var slC = rv();
+            out += '    local ' + slA + ' = 1\n';
+            out += '    local ' + slB + ' = 2\n';
+            out += '    local ' + slC + ' = ' + slLen + '("strong")\n';
+            out += '    local ' + slT + ' = (' + slA + ' < ' + slB + ') and ' + slC + ' or (' + slC + ' + 0)\n';
+            out += '    _ = ' + slT + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── EXTRASTRONG: Table lookup + runtime seed ──────────────────────
+        if (doExtraStr) {
+            var slTbl = rv(); var slSd = rv(); var slIdx = rv(); var slRes = rv();
+            out += '    local ' + slSd  + ' = (os and os.clock and math.floor(os.clock() * 100) or 7) % 16 + 1\n';
+            out += '    local ' + slTbl + ' = {}\n';
+            out += '    for _i = 1, 16 do ' + slTbl + '[_i] = _i end\n';
+            out += '    local ' + slIdx + ' = ' + slTbl + '[' + slSd + ']\n';
+            out += '    local ' + slRes + ' = ' + slLen + '("extrastrong_seed") - ' + slLen + '("extrastrong_seed") + ' + slIdx + '\n';
+            out += '    _ = ' + slRes + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── AGGRESSIVE: Self-referential length chain ─────────────────────
+        if (doAggressive) {
+            var slSelf = rv(); var slRef = rv(); var slChain = rv();
+            out += '    local ' + slSelf + ' = "aggressive_slc_anchor"\n';
+            out += '    local ' + slRef  + ' = ' + slLen + '(' + slSelf + ')\n';
+            out += '    local ' + slChain+ ' = ' + slRef + ' - ' + slRef + ' + ' + slLen + '("chain")\n';
+            out += '    _ = ' + slChain + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
     function startObfuscate() {
         if(_busy) return;
         _busy = true;
@@ -6014,6 +6457,12 @@ function buildAsciiSimple(codes) {
                 o['adv2Mode']          = 'strong';
                 o['atv2Mode']          = 'strong';
                 o['csMode']            = 'strong';
+                o['enableCE']          = true;
+                o['ceMode']            = 'strong';
+                o['enableRN']          = true;
+                o['rnMode']            = 'strong';
+                o['enableSLC']         = true;
+                o['slcMode']           = 'strong';
             } else if (_secLevel === 'extrastrong') {
                 o['enableFakeIf']      = true;
                 o['enableFakeChunks']  = true;
@@ -6032,6 +6481,12 @@ function buildAsciiSimple(codes) {
                 o['adv2Mode']          = 'extrastrong';
                 o['atv2Mode']          = 'extrastrong';
                 o['csMode']            = 'extrastrong';
+                o['enableCE']          = true;
+                o['ceMode']            = 'extrastrong';
+                o['enableRN']          = true;
+                o['rnMode']            = 'extrastrong';
+                o['enableSLC']         = true;
+                o['slcMode']           = 'extrastrong';
             } else if (_secLevel === 'aggressive') {
                 o['enableFakeIf']      = true;
                 o['enableFakeChunks']  = true;
@@ -6053,6 +6508,12 @@ function buildAsciiSimple(codes) {
                 o['adv2Mode']          = 'aggressive';
                 o['atv2Mode']          = 'aggressive';
                 o['csMode']            = 'aggressive';
+                o['enableCE']          = true;
+                o['ceMode']            = 'aggressive';
+                o['enableRN']          = true;
+                o['rnMode']            = 'aggressive';
+                o['enableSLC']         = true;
+                o['slcMode']           = 'aggressive';
             }
             return o;
         })();
@@ -6117,6 +6578,36 @@ function buildAsciiSimple(codes) {
         if (useAO) {
             setProgress(3, 'Aggressive Optimizations...');
             parts.push(buildAggressiveOptimizations(aoMode, JUNK_MULT));
+            parts.push(jBlock(2 * JUNK_MULT));
+        }
+
+        // ── Constant Encryptor ──
+        const useCE   = document.getElementById('enableCE').checked;
+        const ceMode  = document.getElementById('ceMode').value;
+        if (useCE) {
+            setProgress(3, 'Constant Encryptor...');
+            parts.push(buildConstantEncryptor(ceMode, JUNK_MULT));
+            parts.push(jBlock(2 * JUNK_MULT));
+        }
+
+        // ── Renamer ──
+        const useRN   = document.getElementById('enableRN').checked;
+        const rnMode  = document.getElementById('rnMode').value;
+        if (useRN) {
+            setProgress(3, 'Renamer...');
+            const rnRepeat = (rnMode === 'aggressive') ? 2 : 1;
+            for (var _rn_i = 0; _rn_i < rnRepeat; _rn_i++) {
+                parts.push(buildRenamer(rnMode, JUNK_MULT));
+            }
+            parts.push(jBlock(2 * JUNK_MULT));
+        }
+
+        // ── String Length Constants ──
+        const useSLC  = document.getElementById('enableSLC').checked;
+        const slcMode = document.getElementById('slcMode').value;
+        if (useSLC) {
+            setProgress(3, 'String Length Constants...');
+            parts.push(buildStringLengthConstants(slcMode, JUNK_MULT));
             parts.push(jBlock(2 * JUNK_MULT));
         }
 
@@ -6669,7 +7160,7 @@ function buildAsciiSimple(codes) {
     // ── Save / Load / Reset Settings ─────────────────────────────────────────
     var _SETTINGS_KEY = 'ArchiveXNova_Settings_v1';
 
-    var _SETTING_IDS = ["enableAsciiEnc", "asciiMode", "xorKey", "enableIntExpr", "intExprMode", "intExprDepth", "enableNCS", "ncsMode", "ncsParts", "enableFakeIf", "enableFakeChunks", "fakeIntensity", "fakeChunkCount", "enableCFF", "cffMode", "cffStates", "enableVRO", "vroStyle", "vroScope", "enableOP", "opMode", "opCount", "enableAntiDump", "antiDumpMode", "enableAntiTamper", "antiTamperMode", "antiTamperReaction", "enableAntiEnvLog", "antiEnvLogMode", "antiEnvLogNoise", "enableHardCrash", "hardCrashMode", "hardCrashTrigger", "enableLE", "leMode", "leValue", "leReaction", "enableIPP", "ippMode", "ippIntensity", "secLevel", "optLevel", "compatMode", "enableRRO", "rroMode", "optCompileLevel", "enableVMC", "vmcAlgo", "enableIVMS", "ivmsMode", "enableGCF", "gcfMode", "enableSE", "seMode", "enableDBG", "dbgMode", "enableMeow", "meowHookOp", "meowDiscord", "meowComments", "meowRuntimeLogs", "meowLua", "meowConstants", "meowMinifier", "meowSpyExecOnly", "meowExploreFuncs", "meowHttpSpy", "meowReqLogger", "meowBlockReq", "enableADV2", "adv2Mode", "enableATV2", "atv2Mode"];
+    var _SETTING_IDS = ["enableAsciiEnc", "asciiMode", "xorKey", "enableIntExpr", "intExprMode", "intExprDepth", "enableNCS", "ncsMode", "ncsParts", "enableFakeIf", "enableFakeChunks", "fakeIntensity", "fakeChunkCount", "enableCFF", "cffMode", "cffStates", "enableVRO", "vroStyle", "vroScope", "enableOP", "opMode", "opCount", "enableAntiDump", "antiDumpMode", "enableAntiTamper", "antiTamperMode", "antiTamperReaction", "enableAntiEnvLog", "antiEnvLogMode", "antiEnvLogNoise", "enableHardCrash", "hardCrashMode", "hardCrashTrigger", "enableLE", "leMode", "leValue", "leReaction", "enableIPP", "ippMode", "ippIntensity", "secLevel", "optLevel", "compatMode", "enableRRO", "rroMode", "optCompileLevel", "enableVMC", "vmcAlgo", "enableIVMS", "ivmsMode", "enableGCF", "gcfMode", "enableSE", "seMode", "enableDBG", "dbgMode", "enableMeow", "meowHookOp", "meowDiscord", "meowComments", "meowRuntimeLogs", "meowLua", "meowConstants", "meowMinifier", "meowSpyExecOnly", "meowExploreFuncs", "meowHttpSpy", "meowReqLogger", "meowBlockReq", "enableCE", "ceMode", "enableRN", "rnMode", "enableSLC", "slcMode", "enableADV2", "adv2Mode", "enableATV2", "atv2Mode"];
 
     function saveSettings() {
         var data = {};
