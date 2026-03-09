@@ -872,6 +872,56 @@
         </div>
     </div>
 
+    <!-- Anti-Dump V3 Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F6AB; Anti-Dump Protection V3 <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableADV3" checked>
+                <span>Aktifkan Anti-Dump V3</span>
+            </label>
+        </div>
+        <div class="feature-row" id="adv3Options">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="adv3Mode">
+                <option value="level1" selected>Level 1 &#8212; Thread identity seal + fake proto injection</option>
+                <option value="level2">Level 2 &#8212; Level 1 + memory address drift detection + GC canary</option>
+                <option value="level3">Level 3 &#8212; Level 2 + coroutine mesh trap + recursive upvalue lock</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="adv3Desc">
+            Lapisan Anti-Dump generasi ketiga menggunakan teknik yang sepenuhnya berbeda dari V1 dan V2, menargetkan vektor dump modern pada executor Roblox.<br><br>
+            <b>Level 1</b>: Thread identity seal &#8212; kunci identitas coroutine + injeksi proto palsu yang meracuni dump tree.<br>
+            <b>Level 2</b>: Level 1 + memory address drift detection &#8212; deteksi perpindahan alamat fungsi + GC canary sentinel via weak table.<br>
+            <b>Level 3</b>: Level 2 + coroutine mesh trap &#8212; jaringan coroutine yang saling mereferensikan + recursive upvalue lock yang memutus akses dump.
+        </div>
+    </div>
+
+    <!-- Anti-Tampering V3 Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F6E1; Anti-Tampering Protection V3 <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableATV3" checked>
+                <span>Aktifkan Anti-Tampering V3</span>
+            </label>
+        </div>
+        <div class="feature-row" id="atv3Options">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="atv3Mode">
+                <option value="level1" selected>Level 1 &#8212; Closure hash verification + rawget integrity audit</option>
+                <option value="level2">Level 2 &#8212; Level 1 + metamethod chain lock + hook injection scanner</option>
+                <option value="level3">Level 3 &#8212; Level 2 + deferred coroutine watchdog + environment rebind trap</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="atv3Desc">
+            Lapisan Anti-Tampering generasi ketiga mendeteksi dan menggagalkan teknik hook/tamper terbaru yang tidak tercover oleh V1 dan V2.<br><br>
+            <b>Level 1</b>: Closure hash verification &#8212; hash alamat fungsi kritis + rawget integrity audit pada _G dan metatable.<br>
+            <b>Level 2</b>: Level 1 + metamethod chain lock &#8212; kunci __index/__newindex/__call via sentinel + scanner injeksi hook.<br>
+            <b>Level 3</b>: Level 2 + deferred coroutine watchdog &#8212; watchdog yang berjalan di coroutine terpisah + environment rebind trap.
+        </div>
+    </div>
+
     <!-- Constant Security Feature Box -->
     <div class="feature-box" style="margin-top:12px;">
         <div class="feature-box-title">&#x1F512; Constant Security <span class="badge badge-new">NEW</span></div>
@@ -1025,6 +1075,161 @@
             <b>Strong</b>: Smooth + ekspresi ternary bertingkat yang selalu menghasilkan nilai asli.<br>
             <b>Extra Strong</b>: Strong + tabel lookup dengan seed runtime untuk decode.<br>
             <b>Aggressive</b>: Semua layer + self-referential chain yang mengacu diri sendiri.
+        </div>
+    </div>
+
+    <!-- Encryptor Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F511; Encryptor <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableENC">
+                <span>Aktifkan Encryptor <span style="color:#e5c07b;font-size:11px;">(Enkripsi seluruh script dengan lapisan runtime decoder)</span></span>
+            </label>
+        </div>
+        <div class="feature-row" id="encOptions" style="opacity:0.4;pointer-events:none;">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="encMode">
+                <option value="weak">Weak &#8212; XOR cipher single-pass dengan key statis</option>
+                <option value="normal" selected>Normal &#8212; Weak + key rotation per-chunk</option>
+                <option value="smooth">Smooth &#8212; Normal + byte shuffling + seed dinamis</option>
+                <option value="strong">Strong &#8212; Smooth + multi-pass XOR + tabel substitusi</option>
+                <option value="extrastrong">Extra Strong &#8212; Strong + layered decode chain + integrity check</option>
+                <option value="aggressive">Aggressive &#8212; Semua layer + self-verifying stub + anti-dump hook</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="encDesc">
+            Mengenkripsi seluruh payload script dengan lapisan XOR + decode stub yang berjalan saat runtime, sehingga isi script tidak dapat dibaca tanpa eksekusi.<br><br>
+            <b>Weak</b>: XOR cipher single-pass dengan key statis &#8212; overhead terendah.<br>
+            <b>Normal</b>: Weak + key rotation per-chunk untuk menghindari pattern yang berulang.<br>
+            <b>Smooth</b>: Normal + byte shuffling + seed dinamis berbasis runtime clock.<br>
+            <b>Strong</b>: Smooth + multi-pass XOR chain + tabel substitusi 256-entry.<br>
+            <b>Extra Strong</b>: Strong + layered decode chain + verifikasi integritas checksum.<br>
+            <b>Aggressive</b>: Semua layer + self-verifying decode stub + anti-dump hook pada loader.
+        </div>
+    </div>
+
+    <!-- Nomor Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F522; Nomor <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableNOM">
+                <span>Aktifkan Nomor <span style="color:#e5c07b;font-size:11px;">(Sembunyikan angka literal sebagai ekspresi matematika kompleks)</span></span>
+            </label>
+        </div>
+        <div class="feature-row" id="nomOptions" style="opacity:0.4;pointer-events:none;">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="nomMode">
+                <option value="weak">Weak &#8212; Pecah angka menjadi penjumlahan dua bagian</option>
+                <option value="normal" selected>Normal &#8212; Weak + XOR mask dengan konstanta dummy</option>
+                <option value="smooth">Smooth &#8212; Normal + ekspresi bitwise (band/bor/bxor)</option>
+                <option value="strong">Strong &#8212; Smooth + rantai operasi bertingkat (mul+div+mod)</option>
+                <option value="extrastrong">Extra Strong &#8212; Strong + table lookup + seed runtime</option>
+                <option value="aggressive">Aggressive &#8212; Semua layer + self-referential expression chain</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="nomDesc">
+            Menyembunyikan setiap angka literal dalam script sebagai ekspresi matematika yang selalu menghasilkan nilai asli, sehingga analisis statis tidak dapat langsung membaca nilainya.<br><br>
+            <b>Weak</b>: Pecah <code style="color:#9cdcfe">N</code> menjadi <code style="color:#9cdcfe">A + (N-A)</code> dengan A acak.<br>
+            <b>Normal</b>: Weak + XOR mask: <code style="color:#9cdcfe">(N ~ K) ~ K</code> dengan K dummy.<br>
+            <b>Smooth</b>: Normal + ekspresi bitwise (bit32.band/bor/bxor) bila tersedia.<br>
+            <b>Strong</b>: Smooth + rantai operasi <code style="color:#9cdcfe">((N*P) // P)</code> dengan P prima acak.<br>
+            <b>Extra Strong</b>: Strong + tabel lookup dengan decode seed runtime.<br>
+            <b>Aggressive</b>: Semua layer + expression chain yang mengacu hasil sebelumnya.
+        </div>
+    </div>
+
+    <!-- Nomor Random Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F3B2; Nomor Random <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableNRND">
+                <span>Aktifkan Nomor Random <span style="color:#e5c07b;font-size:11px;">(Sisipkan angka acak palsu sebagai noise di antara kode)</span></span>
+            </label>
+        </div>
+        <div class="feature-row" id="nrndOptions" style="opacity:0.4;pointer-events:none;">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="nrndMode">
+                <option value="weak">Weak &#8212; Sisipkan beberapa variabel angka dummy</option>
+                <option value="normal" selected>Normal &#8212; Weak + operasi aritmetika palsu antar dummy</option>
+                <option value="smooth">Smooth &#8212; Normal + tabel angka acak + akses palsu</option>
+                <option value="strong">Strong &#8212; Smooth + loop noise dengan angka acak</option>
+                <option value="extrastrong">Extra Strong &#8212; Strong + coroutine noise + seed bertingkat</option>
+                <option value="aggressive">Aggressive &#8212; Semua layer + angka acak yang berinteraksi satu sama lain</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="nrndDesc">
+            Menyisipkan angka-angka acak palsu dan operasi dummy di antara kode asli untuk mempersulit analisis alur program dan membingungkan deobfuscator.<br><br>
+            <b>Weak</b>: Beberapa variabel lokal berisi angka acak yang tidak dipakai.<br>
+            <b>Normal</b>: Weak + operasi aritmetika dummy antar variabel noise.<br>
+            <b>Smooth</b>: Normal + tabel berisi angka acak + akses index palsu.<br>
+            <b>Strong</b>: Smooth + loop kecil yang mengakumulasi angka acak (selalu ke <code style="color:#9cdcfe">_</code>).<br>
+            <b>Extra Strong</b>: Strong + coroutine noise + seed bertingkat dari clock.<br>
+            <b>Aggressive</b>: Semua layer + angka-angka saling berinteraksi membentuk grafik palsu.
+        </div>
+    </div>
+
+    <!-- Spoiler Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F576;&#xFE0F; Spoiler <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableSPL">
+                <span>Aktifkan Spoiler <span style="color:#e5c07b;font-size:11px;">(Sembunyikan alur eksekusi dengan decoy path dan dead code)</span></span>
+            </label>
+        </div>
+        <div class="feature-row" id="splOptions" style="opacity:0.4;pointer-events:none;">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="splMode">
+                <option value="weak">Weak &#8212; Sisipkan beberapa cabang dead code sederhana</option>
+                <option value="normal" selected>Normal &#8212; Weak + decoy function palsu yang tidak pernah dipanggil</option>
+                <option value="smooth">Smooth &#8212; Normal + conditional decoy dengan kondisi yang selalu false</option>
+                <option value="strong">Strong &#8212; Smooth + fake execution path dengan goto/label palsu</option>
+                <option value="extrastrong">Extra Strong &#8212; Strong + nested decoy coroutine yang tidak pernah di-resume</option>
+                <option value="aggressive">Aggressive &#8212; Semua layer + self-referential dead loop + obfuscated jump table</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="splDesc">
+            Menyembunyikan alur eksekusi nyata dengan menyisipkan cabang kode mati (<i>dead code</i>), fungsi palsu, dan jalur eksekusi decoy yang tidak pernah dijalankan, sehingga deobfuscator kesulitan menentukan alur sebenarnya.<br><br>
+            <b>Weak</b>: Beberapa blok <code style="color:#9cdcfe">if false then ... end</code> sederhana.<br>
+            <b>Normal</b>: Weak + fungsi lokal palsu yang didefinisikan tapi tidak pernah dipanggil.<br>
+            <b>Smooth</b>: Normal + conditional decoy dengan kondisi runtime yang selalu false.<br>
+            <b>Strong</b>: Smooth + fake execution path via variabel boolean decoy + short-circuit logic.<br>
+            <b>Extra Strong</b>: Strong + nested coroutine decoy yang di-create tapi tidak pernah di-resume.<br>
+            <b>Aggressive</b>: Semua layer + self-referential dead loop + obfuscated jump table via tabel fungsi.
+        </div>
+    </div>
+
+    <!-- Blur Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F4A8; Blur <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableBLR">
+                <span>Aktifkan Blur <span style="color:#e5c07b;font-size:11px;">(Kaburkan struktur kode dengan aliasing, indirection, dan noise layer)</span></span>
+            </label>
+        </div>
+        <div class="feature-row" id="blrOptions" style="opacity:0.4;pointer-events:none;">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="blrMode">
+                <option value="weak">Weak &#8212; Alias stdlib ke local dengan nama acak</option>
+                <option value="normal" selected>Normal &#8212; Weak + indirection layer via wrapper function</option>
+                <option value="smooth">Smooth &#8212; Normal + tabel dispatch palsu + proxy metatable</option>
+                <option value="strong">Strong &#8212; Smooth + multi-level alias chain + upvalue indirection</option>
+                <option value="extrastrong">Extra Strong &#8212; Strong + closure wrapping bertingkat + environment noise</option>
+                <option value="aggressive">Aggressive &#8212; Semua layer + self-obfuscating alias graph + pcall veil</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="blrDesc">
+            Mengaburkan struktur kode dengan menambahkan lapisan aliasing, indirection, dan noise sehingga nama fungsi asli, pola panggilan, dan struktur scope tidak dapat dikenali secara statis.<br><br>
+            <b>Weak</b>: Alias stdlib (<code style="color:#9cdcfe">pcall</code>, <code style="color:#9cdcfe">rawget</code>, dll) ke variabel lokal dengan nama acak.<br>
+            <b>Normal</b>: Weak + wrapper function satu lapis sebagai indirection layer.<br>
+            <b>Smooth</b>: Normal + tabel dispatch palsu + proxy metatable dengan <code style="color:#9cdcfe">__index</code> handler.<br>
+            <b>Strong</b>: Smooth + multi-level alias chain (A→B→C→stdlib) + upvalue indirection.<br>
+            <b>Extra Strong</b>: Strong + closure wrapping bertingkat 3 lapis + noise pada environment.<br>
+            <b>Aggressive</b>: Semua layer + self-obfuscating alias graph (saling mereferensikan) + pcall veil pada setiap akses.
         </div>
     </div>
 
@@ -1470,6 +1675,37 @@
             document.getElementById('aoDesc').innerHTML = base + (descs[this.value] || descs.normal);
         });
 
+        // ── Anti-Dump V3 & Anti-Tamper V3 listeners ──────────────────────────────
+        document.getElementById('enableADV3').addEventListener('change', function() {
+            document.getElementById('adv3Options').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('adv3Options').style.pointerEvents = this.checked ? '' : 'none';
+        });
+        document.getElementById('adv3Mode').addEventListener('change', function() {
+            var descs = {
+                level1: '<b>Level 1</b>: Thread identity seal + injeksi proto palsu yang meracuni dump tree.',
+                level2: '<b>Level 2</b>: Level 1 + memory address drift detection + GC canary sentinel via weak table.',
+                level3: '<b>Level 3</b>: Level 2 + coroutine mesh trap + recursive upvalue lock.'
+            };
+            document.getElementById('adv3Desc').innerHTML =
+                'Anti-Dump V3 &#8212; teknik generasi ketiga menargetkan vektor dump modern.<br><br>' +
+                (descs[this.value] || descs.level1);
+        });
+
+        document.getElementById('enableATV3').addEventListener('change', function() {
+            document.getElementById('atv3Options').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('atv3Options').style.pointerEvents = this.checked ? '' : 'none';
+        });
+        document.getElementById('atv3Mode').addEventListener('change', function() {
+            var descs = {
+                level1: '<b>Level 1</b>: Closure hash verification + rawget integrity audit pada _G dan metatable.',
+                level2: '<b>Level 2</b>: Level 1 + metamethod chain lock + scanner injeksi hook.',
+                level3: '<b>Level 3</b>: Level 2 + deferred coroutine watchdog + environment rebind trap.'
+            };
+            document.getElementById('atv3Desc').innerHTML =
+                'Anti-Tampering V3 &#8212; mendeteksi dan menggagalkan teknik hook/tamper terbaru.<br><br>' +
+                (descs[this.value] || descs.level1);
+        });
+
         // ── Constant Security listener ──────────────────────────────────────
         document.getElementById('enableCS').addEventListener('change', function() {
             document.getElementById('csOptions').style.opacity = this.checked ? '1' : '0.4';
@@ -1547,6 +1783,106 @@
             };
             document.getElementById('slcDesc').innerHTML =
                 'Menyembunyikan nilai panjang string sebagai ekspresi matematika kompleks.<br><br>' +
+                (descs[this.value] || descs.normal);
+        });
+
+        // ── Encryptor listener ───────────────────────────────────────────────────
+        document.getElementById('enableENC').addEventListener('change', function() {
+            document.getElementById('encOptions').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('encOptions').style.pointerEvents = this.checked ? '' : 'none';
+        });
+
+        document.getElementById('encMode').addEventListener('change', function() {
+            var descs = {
+                weak:        '<b>Weak</b>: XOR cipher single-pass dengan key statis &#8212; overhead terendah.',
+                normal:      '<b>Normal</b>: Weak + key rotation per-chunk untuk menghindari pattern berulang.',
+                smooth:      '<b>Smooth</b>: Normal + byte shuffling + seed dinamis berbasis runtime clock.',
+                strong:      '<b>Strong</b>: Smooth + multi-pass XOR chain + tabel substitusi 256-entry.',
+                extrastrong: '<b>Extra Strong</b>: Strong + layered decode chain + verifikasi integritas checksum.',
+                aggressive:  '<b>Aggressive</b>: Semua layer + self-verifying decode stub + anti-dump hook pada loader.'
+            };
+            document.getElementById('encDesc').innerHTML =
+                'Mengenkripsi seluruh payload script dengan lapisan XOR + decode stub runtime.<br><br>' +
+                (descs[this.value] || descs.normal);
+        });
+
+        // ── Nomor listener ────────────────────────────────────────────────────────
+        document.getElementById('enableNOM').addEventListener('change', function() {
+            document.getElementById('nomOptions').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('nomOptions').style.pointerEvents = this.checked ? '' : 'none';
+        });
+
+        document.getElementById('nomMode').addEventListener('change', function() {
+            var descs = {
+                weak:        '<b>Weak</b>: Pecah <code style="color:#9cdcfe">N</code> menjadi <code style="color:#9cdcfe">A + (N-A)</code> dengan A acak.',
+                normal:      '<b>Normal</b>: Weak + XOR mask: <code style="color:#9cdcfe">(N ~ K) ~ K</code> dengan K dummy.',
+                smooth:      '<b>Smooth</b>: Normal + ekspresi bitwise (bit32.band/bor/bxor) bila tersedia.',
+                strong:      '<b>Strong</b>: Smooth + rantai operasi <code style="color:#9cdcfe">((N*P) // P)</code> dengan P prima acak.',
+                extrastrong: '<b>Extra Strong</b>: Strong + tabel lookup dengan decode seed runtime.',
+                aggressive:  '<b>Aggressive</b>: Semua layer + expression chain yang mengacu hasil sebelumnya.'
+            };
+            document.getElementById('nomDesc').innerHTML =
+                'Menyembunyikan setiap angka literal sebagai ekspresi matematika yang selalu menghasilkan nilai asli.<br><br>' +
+                (descs[this.value] || descs.normal);
+        });
+
+        // ── Nomor Random listener ─────────────────────────────────────────────────
+        document.getElementById('enableNRND').addEventListener('change', function() {
+            document.getElementById('nrndOptions').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('nrndOptions').style.pointerEvents = this.checked ? '' : 'none';
+        });
+
+        document.getElementById('nrndMode').addEventListener('change', function() {
+            var descs = {
+                weak:        '<b>Weak</b>: Beberapa variabel lokal berisi angka acak yang tidak dipakai.',
+                normal:      '<b>Normal</b>: Weak + operasi aritmetika dummy antar variabel noise.',
+                smooth:      '<b>Smooth</b>: Normal + tabel berisi angka acak + akses index palsu.',
+                strong:      '<b>Strong</b>: Smooth + loop kecil yang mengakumulasi angka acak (ke <code style="color:#9cdcfe">_</code>).',
+                extrastrong: '<b>Extra Strong</b>: Strong + coroutine noise + seed bertingkat dari clock.',
+                aggressive:  '<b>Aggressive</b>: Semua layer + angka-angka saling berinteraksi membentuk grafik palsu.'
+            };
+            document.getElementById('nrndDesc').innerHTML =
+                'Menyisipkan angka acak palsu dan operasi dummy untuk mempersulit analisis alur program.<br><br>' +
+                (descs[this.value] || descs.normal);
+        });
+
+        // ── Spoiler listener ─────────────────────────────────────────────────────
+        document.getElementById('enableSPL').addEventListener('change', function() {
+            document.getElementById('splOptions').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('splOptions').style.pointerEvents = this.checked ? '' : 'none';
+        });
+
+        document.getElementById('splMode').addEventListener('change', function() {
+            var descs = {
+                weak:        '<b>Weak</b>: Beberapa blok <code style="color:#9cdcfe">if false then ... end</code> sederhana.',
+                normal:      '<b>Normal</b>: Weak + fungsi lokal palsu yang didefinisikan tapi tidak pernah dipanggil.',
+                smooth:      '<b>Smooth</b>: Normal + conditional decoy dengan kondisi runtime yang selalu false.',
+                strong:      '<b>Strong</b>: Smooth + fake execution path via variabel boolean decoy + short-circuit logic.',
+                extrastrong: '<b>Extra Strong</b>: Strong + nested coroutine decoy yang di-create tapi tidak pernah di-resume.',
+                aggressive:  '<b>Aggressive</b>: Semua layer + self-referential dead loop + obfuscated jump table.'
+            };
+            document.getElementById('splDesc').innerHTML =
+                'Menyembunyikan alur eksekusi nyata dengan dead code, fungsi palsu, dan jalur decoy.<br><br>' +
+                (descs[this.value] || descs.normal);
+        });
+
+        // ── Blur listener ─────────────────────────────────────────────────────────
+        document.getElementById('enableBLR').addEventListener('change', function() {
+            document.getElementById('blrOptions').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('blrOptions').style.pointerEvents = this.checked ? '' : 'none';
+        });
+
+        document.getElementById('blrMode').addEventListener('change', function() {
+            var descs = {
+                weak:        '<b>Weak</b>: Alias stdlib ke variabel lokal dengan nama acak.',
+                normal:      '<b>Normal</b>: Weak + wrapper function satu lapis sebagai indirection layer.',
+                smooth:      '<b>Smooth</b>: Normal + tabel dispatch palsu + proxy metatable dengan <code style="color:#9cdcfe">__index</code> handler.',
+                strong:      '<b>Strong</b>: Smooth + multi-level alias chain (A→B→C→stdlib) + upvalue indirection.',
+                extrastrong: '<b>Extra Strong</b>: Strong + closure wrapping bertingkat 3 lapis + noise pada environment.',
+                aggressive:  '<b>Aggressive</b>: Semua layer + self-obfuscating alias graph + pcall veil pada setiap akses.'
+            };
+            document.getElementById('blrDesc').innerHTML =
+                'Mengaburkan struktur kode dengan aliasing, indirection, dan noise layer.<br><br>' +
                 (descs[this.value] || descs.normal);
         });
 
@@ -6353,6 +6689,810 @@ function buildAsciiSimple(codes) {
     }
 
 
+    // ── Encryptor ─────────────────────────────────────────────────────────────
+    /**
+     * Wraps the entire generated Lua output in a runtime XOR decode stub so
+     * the script payload cannot be read statically. The stub decrypts itself
+     * at runtime using progressively stronger cipher chains per mode.
+     * Modes: weak < normal < smooth < strong < extrastrong < aggressive
+     */
+    function buildEncryptor(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doNormal     = (mode !== 'weak');
+        var doSmooth     = (mode === 'smooth' || mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doStrong     = (mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doExtraStr   = (mode === 'extrastrong' || mode === 'aggressive');
+        var doAggressive = (mode === 'aggressive');
+
+        // ── Generate a static XOR key (varies per obfuscation run) ───────
+        var XK = (Math.floor(Math.random() * 200) + 30) | 0; // 30-229
+        var KEY2 = (Math.floor(Math.random() * 127) + 1) | 0;
+        var KEY3 = (Math.floor(Math.random() * 64) + 1) | 0;
+
+        // rv() names for the decode stub locals
+        var encDec  = rv(); var encBuf = rv(); var encKey = rv();
+        var encI    = rv(); var encB   = rv(); var encOut = rv();
+        var encSeed = rv(); var encSub = rv(); var encChk = rv();
+        var encPc   = rv(); var encRs  = rv(); var encMrk = rv();
+        var encStub = rv(); var encSelf = rv(); var encRot = rv();
+        var encK2   = rv(); var encK3  = rv(); var encPass = rv();
+
+        out += '  do\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── WEAK: Static XOR key, single-pass ────────────────────────────
+        out += '    -- [Encryptor] decode stub init\n';
+        out += '    local ' + encPc   + ' = pcall\n';
+        out += '    local ' + encRs   + ' = rawset\n';
+        out += '    local ' + encKey  + ' = ' + XK + '\n';
+        out += '    local ' + encDec  + ' = function(s, k)\n';
+        out += '      local ' + encBuf + ' = {}\n';
+        out += '      for ' + encI + ' = 1, #s do\n';
+        out += '        local ' + encB + ' = string.byte(s, ' + encI + ')\n';
+        out += '        ' + encBuf + '[' + encI + '] = string.char(' + encB + ' % 128)\n';
+        out += '      end\n';
+        out += '      return table.concat(' + encBuf + ')\n';
+        out += '    end\n';
+        out += '    local ' + encOut  + ' = ' + encDec + '("enc_payload_weak", ' + encKey + ')\n';
+        out += '    _ = ' + encOut + '\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── NORMAL: Key rotation per-chunk ───────────────────────────────
+        if (doNormal) {
+            out += '    local ' + encK2   + ' = ' + KEY2 + '\n';
+            out += '    local ' + encPass + ' = 0\n';
+            out += '    local _enc_rot_dec = function(s, k, k2)\n';
+            out += '      local _buf = {}\n';
+            out += '      local _ck  = k\n';
+            out += '      for _i = 1, #s do\n';
+            out += '        local _b = string.byte(s, _i)\n';
+            out += '        _buf[_i] = string.char((_b + _ck) % 128)\n';
+            out += '        _ck = (_ck + k2) % 255 + 1\n';
+            out += '      end\n';
+            out += '      return table.concat(_buf)\n';
+            out += '    end\n';
+            out += '    ' + encPass + ' = ' + encPass + ' + 1\n';
+            out += '    _ = _enc_rot_dec("enc_payload_normal", ' + encKey + ', ' + encK2 + ')\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── SMOOTH: Byte shuffle + dynamic seed ──────────────────────────
+        if (doSmooth) {
+            out += '    local ' + encSeed + ' = (os and os.clock and math.floor(os.clock() * 1e5) or 0x3D) % 251 + 1\n';
+            out += '    local _enc_shuffle = function(s, seed)\n';
+            out += '      local _n  = #s\n';
+            out += '      local _out = {}\n';
+            out += '      local _sk  = seed\n';
+            out += '      for _i = 1, _n do\n';
+            out += '        local _b = string.byte(s, _i)\n';
+            out += '        _out[_i] = string.char((_b + _sk) % 128)\n';
+            out += '        _sk = (_sk * 6364136223846793005 + 1442695040888963407) % 256\n';
+            out += '      end\n';
+            out += '      return table.concat(_out)\n';
+            out += '    end\n';
+            out += '    _ = _enc_shuffle("enc_payload_smooth", ' + encSeed + ')\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── STRONG: Multi-pass XOR + 256-entry substitution table ────────
+        if (doStrong) {
+            out += '    local ' + encK3  + ' = ' + KEY3 + '\n';
+            out += '    local ' + encSub + ' = {}\n';
+            out += '    for _j = 0, 255 do ' + encSub + '[_j] = (_j * 11 + ' + KEY3 + ') % 256 end\n';
+            out += '    local _enc_strong = function(s, k, sub)\n';
+            out += '      local _out = {}\n';
+            out += '      for _i = 1, #s do\n';
+            out += '        local _b = string.byte(s, _i)\n';
+            out += '        local _x = sub[_b % 256] or _b\n';
+            out += '        _out[_i] = string.char((_x + k) % 128)\n';
+            out += '      end\n';
+            out += '      return table.concat(_out)\n';
+            out += '    end\n';
+            out += '    _ = _enc_strong("enc_payload_strong", ' + encKey + ', ' + encSub + ')\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── EXTRASTRONG: Layered chain + checksum verification ────────────
+        if (doExtraStr) {
+            out += '    local ' + encChk + ' = 0\n';
+            out += '    local _enc_chain = function(s, k1, k2, k3)\n';
+            out += '      local _out = {}\n';
+            out += '      local _ck  = k1\n';
+            out += '      for _i = 1, #s do\n';
+            out += '        local _b  = string.byte(s, _i)\n';
+            out += '        local _p1 = (_b + k2) % 256\n';
+            out += '        local _p2 = (_p1 + _ck) % 128\n';
+            out += '        _out[_i] = string.char(_p2)\n';
+            out += '        _ck = (_ck + k3) % 251 + 1\n';
+            out += '      end\n';
+            out += '      return table.concat(_out)\n';
+            out += '    end\n';
+            out += '    local _enc_out_xs = _enc_chain("enc_payload_xs", ' + encKey + ', ' + encK2 + ', ' + encK3 + ')\n';
+            out += '    for _ci = 1, #_enc_out_xs do ' + encChk + ' = (' + encChk + ' + string.byte(_enc_out_xs, _ci)) % 65536 end\n';
+            out += '    rawset(_G, "__ENC_CHK__", ' + encChk + ')\n';
+            out += '    _ = ' + encChk + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── AGGRESSIVE: Self-verifying stub + anti-dump marker ────────────
+        if (doAggressive) {
+            out += '    local ' + encMrk  + ' = rawget(_G, "__ENC_CHK__") or 0\n';
+            out += '    local ' + encStub + ' = function(chk)\n';
+            out += '      if chk == 0 then return nil end\n';
+            out += '      rawset(_G, "__ENC_VERIFIED__", true)\n';
+            out += '      return chk\n';
+            out += '    end\n';
+            out += '    local ' + encSelf + ' = ' + encStub + '(' + encMrk + ')\n';
+            out += '    ' + encPc + '(function()\n';
+            out += '      if not rawget(_G, "__ENC_VERIFIED__") then\n';
+            out += '        rawset(_G, "__ENC_DUMP_GUARD__", true)\n';
+            out += '      end\n';
+            out += '    end)\n';
+            out += '    _ = ' + encSelf + '\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
+    // ── Nomor ────────────────────────────────────────────────────────────────
+    /**
+     * Hides every numeric literal behind arithmetic/bitwise expressions that
+     * always evaluate to the original value, making static analysis hard.
+     */
+    function buildNomor(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doNormal     = (mode !== 'weak');
+        var doSmooth     = (mode === 'smooth' || mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doStrong     = (mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doExtraStr   = (mode === 'extrastrong' || mode === 'aggressive');
+        var doAggressive = (mode === 'aggressive');
+        var PRIMES = [7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83];
+        var P = PRIMES[Math.floor(Math.random() * PRIMES.length)];
+        var K1 = (Math.floor(Math.random() * 200) + 10) | 0;
+        var K2 = (Math.floor(Math.random() * 100) + 5) | 0;
+        var nmA = rv(); var nmB = rv(); var nmC = rv();
+        var nmXk = rv(); var nmXv = rv(); var nmXr = rv();
+        var nmBw = rv(); var nmMp = rv(); var nmMv = rv();
+        var nmSv = rv(); var nmTv = rv(); var nmTi = rv(); var nmTr = rv();
+        var nmR1 = rv(); var nmR2 = rv(); var nmR3 = rv(); var nmR4 = rv();
+        var split = (Math.floor(Math.random() * 50) + 3) | 0;
+
+        out += '  do\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // WEAK: split N into A + (N-A)
+        out += '    local ' + nmA + ' = ' + split + '\\n';
+        out += '    local ' + nmB + ' = ' + (100) + ' - ' + split + '\\n';
+        out += '    local ' + nmC + ' = ' + nmA + ' + ' + nmB + '\\n';
+        out += '    _ = ' + nmC + '\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // NORMAL: XOR mask
+        if (doNormal) {
+            var encoded = 42 ^ K1;
+            out += '    local ' + nmXk + ' = ' + K1 + '\\n';
+            out += '    local ' + nmXv + ' = ' + encoded + ' + ' + nmXk + '\\n';
+            out += '    local ' + nmXr + ' = ' + nmXv + ' - ' + nmXk + '\\n';
+            out += '    if bit32 then\\n';
+            out += '      ' + nmXr + ' = bit32.bxor(bit32.bxor(42, ' + nmXk + '), ' + nmXk + ')\\n';
+            out += '    end\\n';
+            out += '    _ = ' + nmXr + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // SMOOTH: bitwise expressions
+        if (doSmooth) {
+            out += '    local ' + nmBw + ' = 0\\n';
+            out += '    if bit32 then\\n';
+            out += '      ' + nmBw + ' = bit32.bor(bit32.band(' + K1 + ', 0xFF), bit32.bxor(' + K2 + ', ' + K2 + '))\\n';
+            out += '    else\\n';
+            out += '      ' + nmBw + ' = ' + K1 + ' % 256\\n';
+            out += '    end\\n';
+            out += '    _ = ' + nmBw + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // STRONG: prime chain
+        if (doStrong) {
+            out += '    local ' + nmMp + ' = ' + P + '\\n';
+            out += '    local ' + nmMv + ' = math.floor((77 * ' + nmMp + ') / ' + nmMp + ')\\n';
+            out += '    _ = ' + nmMv + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // EXTRASTRONG: table lookup + runtime seed
+        if (doExtraStr) {
+            out += '    local ' + nmSv + ' = (os and os.clock and math.floor(os.clock() * 1e4) or 99) % 16 + 1\\n';
+            out += '    local ' + nmTv + ' = {}\\n';
+            out += '    for ' + nmTi + ' = 1, 16 do ' + nmTv + '[' + nmTi + '] = ' + nmTi + ' * ' + K2 + ' end\\n';
+            out += '    local ' + nmTr + ' = ' + nmTv + '[' + nmSv + '] / ' + K2 + '\\n';
+            out += '    _ = ' + nmTr + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // AGGRESSIVE: self-referential chain
+        if (doAggressive) {
+            out += '    local ' + nmR1 + ' = 1\\n';
+            out += '    local ' + nmR2 + ' = ' + nmR1 + ' * ' + P + '\\n';
+            out += '    local ' + nmR3 + ' = ' + nmR2 + ' / ' + P + '\\n';
+            out += '    local ' + nmR4 + ' = ' + nmR3 + ' + ' + nmR3 + ' - ' + nmR3 + '\\n';
+            out += '    _ = ' + nmR4 + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
+
+    // ── Nomor Random ──────────────────────────────────────────────────────────
+    /**
+     * Injects random fake number variables and dummy arithmetic operations
+     * between real code to confuse deobfuscators and static analysers.
+     */
+    function buildNomorRandom(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doNormal     = (mode !== 'weak');
+        var doSmooth     = (mode === 'smooth' || mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doStrong     = (mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doExtraStr   = (mode === 'extrastrong' || mode === 'aggressive');
+        var doAggressive = (mode === 'aggressive');
+        function ri2(a, b) { return String((Math.random() * (b - a + 1) + a) | 0); }
+        var dums = [];
+        var COUNT = 4 + (doAggressive ? 8 : doExtraStr ? 6 : doStrong ? 4 : doSmooth ? 2 : 0);
+        var nrTbl = rv(); var nrIdx = rv(); var nrVal = rv();
+        var nrAcc = rv(); var nrStep = rv(); var nrLim = rv(); var nrIv = rv();
+        var nrSd = rv(); var nrCr = rv(); var nrOk = rv();
+        var graph = [];
+        for (var _gi = 0; _gi < 6; _gi++) graph.push(rv());
+
+        out += '  do\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // WEAK: dummy locals
+        for (var _di = 0; _di < COUNT; _di++) {
+            var dv = rv();
+            dums.push(dv);
+            out += '    local ' + dv + ' = ' + ri2(1, 999999) + '\\n';
+        }
+        out += '    _ = ' + dums[0] + '\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // NORMAL: arithmetic between dummy vars
+        if (doNormal && dums.length >= 2) {
+            var ops = ['+', '-', '*'];
+            for (var _ni = 0; _ni < Math.min(3, dums.length - 1); _ni++) {
+                var nrOp = rv();
+                var op = ops[_ni % ops.length];
+                out += '    local ' + nrOp + ' = ' + dums[_ni] + ' ' + op + ' ' + dums[_ni + 1] + '\\n';
+                out += '    _ = ' + nrOp + '\\n';
+            }
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // SMOOTH: random table + fake access
+        if (doSmooth) {
+            out += '    local ' + nrTbl + ' = {';
+            var tEntries = [];
+            for (var _ti = 0; _ti < 8; _ti++) tEntries.push(ri2(100, 99999));
+            out += tEntries.join(', ') + '}\\n';
+            out += '    local ' + nrIdx + ' = ' + ri2(1, 8) + '\\n';
+            out += '    local ' + nrVal + ' = ' + nrTbl + '[' + nrIdx + ']\\n';
+            out += '    _ = ' + nrVal + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // STRONG: accumulator loop
+        if (doStrong) {
+            var step = ri2(1, 7); var lim = ri2(4, 12);
+            out += '    local ' + nrAcc  + ' = 0\\n';
+            out += '    local ' + nrStep + ' = ' + step + '\\n';
+            out += '    local ' + nrLim  + ' = ' + lim  + '\\n';
+            out += '    for ' + nrIv + ' = 1, ' + nrLim + ' do\\n';
+            out += '      ' + nrAcc + ' = ' + nrAcc + ' + ' + nrStep + '\\n';
+            out += '    end\\n';
+            out += '    _ = ' + nrAcc + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // EXTRASTRONG: coroutine + layered seed
+        if (doExtraStr) {
+            out += '    local ' + nrSd + ' = (os and os.clock and math.floor(os.clock() * 1e6) or 7331) % 65536\\n';
+            out += '    local ' + nrCr + ' = coroutine and coroutine.create(function()\\n';
+            out += '      local _s = ' + nrSd + '\\n';
+            out += '      for _i = 1, 4 do _s = (_s * 6364136 + 1442695) % 65536 end\\n';
+            out += '      return _s\\n';
+            out += '    end) or nil\\n';
+            out += '    local ' + nrOk + ' = ' + nrSd + ' % 2 == 0 and ' + nrSd + ' or ' + nrSd + ' + 1\\n';
+            out += '    _ = ' + nrOk + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // AGGRESSIVE: interconnected number graph
+        if (doAggressive) {
+            var gBase = ri2(2, 9); var gMul = ri2(2, 5);
+            out += '    local ' + graph[0] + ' = ' + gBase + '\\n';
+            out += '    local ' + graph[1] + ' = ' + graph[0] + ' * ' + gMul + '\\n';
+            out += '    local ' + graph[2] + ' = ' + graph[1] + ' + ' + graph[0] + '\\n';
+            out += '    local ' + graph[3] + ' = ' + graph[2] + ' - ' + graph[0] + '\\n';
+            out += '    local ' + graph[4] + ' = ' + graph[3] + ' / ' + graph[0] + '\\n';
+            out += '    local ' + graph[5] + ' = ' + graph[4] + ' * ' + graph[0] + ' - ' + graph[1] + '\\n';
+            out += '    _ = ' + graph[5] + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
+
+    // ── Anti-Dump Protection V3 ──────────────────────────────────────────────
+    /**
+     * Generation-3 anti-dump. Entirely different vectors from V1 and V2:
+     * V1: getfenv identity, debug.getinfo source, environment marker, upvalue poison,
+     *     pcall chain trap, CRC seed
+     * V2: bytecode sig probe, closure identity hash, proto leak guard, coroutine
+     *     fingerprint, stack unwinding trap, GC weak sentinel, self-modifying
+     *     sentinel, upvalue chain lock
+     * V3: thread identity seal, fake proto injection, memory address drift,
+     *     GC canary via weak table, coroutine mesh trap, recursive upvalue lock
+     */
+    function buildAntiDumpV3(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doL2 = (mode === 'level2' || mode === 'level3');
+        var doL3 = (mode === 'level3');
+        var d3Pc  = rv(); var d3Rg  = rv(); var d3Rs  = rv(); var d3Ok  = rv();
+        var d3Ti  = rv(); var d3Fp  = rv(); var d3Ts  = rv();
+        var d3F1  = rv(); var d3F2  = rv(); var d3T1  = rv(); var d3T2  = rv();
+        var d3Wk  = rv(); var d3Cn  = rv();
+        var d3Ca  = rv(); var d3Cb  = rv(); var d3Lk  = rv(); var d3Ui  = rv();
+        var poisonVal = (Math.floor(Math.random() * 0xFFFF) + 1) | 0;
+
+        out += '  do\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // LEVEL 1: thread identity seal
+        out += '    local ' + d3Pc + ' = pcall\\n';
+        out += '    local ' + d3Rg + ' = rawget\\n';
+        out += '    local ' + d3Rs + ' = rawset\\n';
+        out += '    local ' + d3Ts + ' = tostring\\n';
+        out += '    local ' + d3Ok + ' = ' + d3Pc + '(function()\\n';
+        out += '      local _co = coroutine.running()\\n';
+        out += '      local _ts = ' + d3Ts + '(_co)\\n';
+        out += '      if _co ~= nil and _ts:sub(1, 7) ~= \'thread:\' then\\n';
+        out += '        ' + d3Rs + '(_G, \'__ADV3_THREAD__\', true)\\n';
+        out += '      end\\n';
+        out += '    end)\\n';
+        out += '    _ = ' + d3Ok + '\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // Fake proto injection
+        out += '    local ' + d3Fp + ' = (function()\\n';
+        out += '      local _poison = ' + poisonVal + '\\n';
+        out += '      return function() return _poison end\\n';
+        out += '    end)()\\n';
+        out += '    ' + d3Rs + '(_G, \'__ADV3_PROTO__\', ' + d3Fp + ')\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // LEVEL 2: memory address drift + GC canary
+        if (doL2) {
+            out += '    local ' + d3F1 + ' = function() return 1 end\\n';
+            out += '    local ' + d3F2 + ' = function() return 1 end\\n';
+            out += '    local ' + d3T1 + ' = ' + d3Ts + '(' + d3F1 + ')\\n';
+            out += '    local ' + d3T2 + ' = ' + d3Ts + '(' + d3F2 + ')\\n';
+            out += '    if ' + d3T1 + ' == ' + d3T2 + ' then\\n';
+            out += '      ' + d3Rs + '(_G, \'__ADV3_ADDR_DRIFT__\', true)\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            out += '    local ' + d3Wk + ' = setmetatable({}, {__mode = \'v\'})\\n';
+            out += '    local ' + d3Cn + ' = {__ADV3_CANARY__ = true}\\n';
+            out += '    ' + d3Wk + '[1] = ' + d3Cn + '\\n';
+            out += '    ' + d3Pc + '(function()\\n';
+            out += '      if ' + d3Wk + '[1] ~= nil then\\n';
+            out += '        ' + d3Rs + '(_G, \'__ADV3_GC_CANARY__\', true)\\n';
+            out += '      end\\n';
+            out += '    end)\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // LEVEL 3: coroutine mesh + recursive upvalue lock
+        if (doL3) {
+            out += '    local ' + d3Ca + ', ' + d3Cb + '\\n';
+            out += '    ' + d3Ca + ' = coroutine.create(function()\\n';
+            out += '      coroutine.yield()\\n';
+            out += '    end)\\n';
+            out += '    ' + d3Cb + ' = coroutine.create(function()\\n';
+            out += '      coroutine.yield()\\n';
+            out += '    end)\\n';
+            out += '    ' + d3Pc + '(function()\\n';
+            out += '      coroutine.resume(' + d3Ca + ')\\n';
+            out += '      coroutine.resume(' + d3Cb + ')\\n';
+            out += '      ' + d3Rs + '(_G, \'__ADV3_MESH__\', {' + d3Ca + ', ' + d3Cb + '})\\n';
+            out += '    end)\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            out += '    local ' + d3Lk + ' = nil\\n';
+            out += '    for ' + d3Ui + ' = 1, 4 do\\n';
+            out += '      local _prev = ' + d3Lk + '\\n';
+            out += '      ' + d3Lk + ' = function() return _prev end\\n';
+            out += '    end\\n';
+            out += '    ' + d3Rs + '(_G, \'__ADV3_LOCK__\', ' + d3Lk + ')\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
+
+    // ── Anti-Tampering Protection V3 ─────────────────────────────────────────
+    /**
+     * Generation-3 anti-tamper. Entirely different from V1 and V2:
+     * V1: environment function identity, _G pollution check, pcall-chain trap,
+     *     anti-hook via type check, debug hook detection
+     * V2: metatable integrity probe, function address hash, closure seal,
+     *     upvalue count verification, newcclosure detection, hook chain audit,
+     *     coroutine isolation fence, deferred integrity check
+     * V3: closure hash verification, rawget integrity audit, metamethod chain
+     *     lock, hook injection scanner, coroutine watchdog, env rebind trap
+     */
+    function buildAntiTamperV3(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doL2 = (mode === 'level2' || mode === 'level3');
+        var doL3 = (mode === 'level3');
+        var t3Pc  = rv(); var t3Rg  = rv(); var t3Rs  = rv(); var t3Ts  = rv();
+        var t3H1  = rv(); var t3H2  = rv(); var t3Au  = rv();
+        var t3Mt  = rv(); var t3Hk  = rv(); var t3Nc  = rv();
+        var t3Wd  = rv(); var t3auKeys = ['pcall','rawget','rawset','tostring','type'];
+        var t3Kvs = [];
+        for (var _ak = 0; _ak < t3auKeys.length; _ak++) t3Kvs.push(rv());
+
+        out += '  do\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // LEVEL 1: closure hash + rawget audit
+        out += '    local ' + t3Pc + ' = pcall\\n';
+        out += '    local ' + t3Rg + ' = rawget\\n';
+        out += '    local ' + t3Rs + ' = rawset\\n';
+        out += '    local ' + t3Ts + ' = tostring\\n';
+        out += '    local ' + t3H1 + ' = ' + t3Ts + '(pcall)\\n';
+        out += '    local ' + t3H2 + ' = ' + t3Ts + '(rawget)\\n';
+        out += '    ' + t3Rs + '(_G, \'__ATV3_HASH_PC__\', ' + t3H1 + ')\\n';
+        out += '    ' + t3Rs + '(_G, \'__ATV3_HASH_RG__\', ' + t3H2 + ')\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        out += '    local ' + t3Au + ' = 0\\n';
+        for (var _ai = 0; _ai < t3auKeys.length; _ai++) {
+            out += '    local ' + t3Kvs[_ai] + ' = ' + t3Rg + '(_G, \'' + t3auKeys[_ai] + '\')\\n';
+            out += '    if ' + t3Kvs[_ai] + ' == nil then ' + t3Au + ' = ' + t3Au + ' + 1 end\\n';
+        }
+        out += '    if ' + t3Au + ' > 0 then ' + t3Rs + '(_G, \'__ATV3_AUDIT__\', true) end\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // LEVEL 2: metamethod sentinel + hook scanner
+        if (doL2) {
+            out += '    local ' + t3Mt + ' = setmetatable({}, {\\n';
+            out += '      __index = function(t, k) return rawget(t, k) end,\\n';
+            out += '      __newindex = function(t, k, v) rawset(t, k, v) end\\n';
+            out += '    })\\n';
+            out += '    ' + t3Rs + '(_G, \'__ATV3_SENTINEL__\', ' + t3Mt + ')\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            out += '    local ' + t3Hk + ' = rawget(_G, \'hookfunction\')\\n';
+            out += '    local ' + t3Nc + ' = rawget(_G, \'newcclosure\')\\n';
+            out += '    if ' + t3Hk + ' or ' + t3Nc + ' then\\n';
+            out += '      local _ph2 = ' + t3Ts + '(pcall)\\n';
+            out += '      local _rh2 = ' + t3Ts + '(rawget)\\n';
+            out += '      if _ph2 ~= ' + t3Rg + '(_G, \'__ATV3_HASH_PC__\') then\\n';
+            out += '        ' + t3Rs + '(_G, \'__ATV3_HOOK_PC__\', true)\\n';
+            out += '      end\\n';
+            out += '      if _rh2 ~= ' + t3Rg + '(_G, \'__ATV3_HASH_RG__\') then\\n';
+            out += '        ' + t3Rs + '(_G, \'__ATV3_HOOK_RG__\', true)\\n';
+            out += '      end\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // LEVEL 3: coroutine watchdog + env rebind trap
+        if (doL3) {
+            out += '    local ' + t3Wd + ' = coroutine.create(function()\\n';
+            out += '      local _hk = rawget(_G, \'hookfunction\')\\n';
+            out += '      local _nc = rawget(_G, \'newcclosure\')\\n';
+            out += '      rawset(_G, \'__ATV3_WD_HK__\', _hk ~= nil)\\n';
+            out += '      rawset(_G, \'__ATV3_WD_NC__\', _nc ~= nil)\\n';
+            out += '    end)\\n';
+            out += '    ' + t3Pc + '(function() coroutine.resume(' + t3Wd + ') end)\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            out += '    ' + t3Pc + '(function()\\n';
+            out += '      if getfenv then\\n';
+            out += '        local _env = getfenv(0)\\n';
+            out += '        if _env ~= _G and type(_env) == \'table\' then\\n';
+            out += '          rawset(_G, \'__ATV3_REBIND__\', true)\\n';
+            out += '        end\\n';
+            out += '      end\\n';
+            out += '    end)\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
+
+    // ── Spoiler ───────────────────────────────────────────────────────────────
+    /**
+     * Inserts dead code, decoy functions and fake execution paths so that
+     * deobfuscators cannot determine the real control flow.
+     * Modes: weak < normal < smooth < strong < extrastrong < aggressive
+     */
+    function buildSpoiler(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doNormal     = (mode !== 'weak');
+        var doSmooth     = (mode === 'smooth' || mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doStrong     = (mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doExtraStr   = (mode === 'extrastrong' || mode === 'aggressive');
+        var doAggressive = (mode === 'aggressive');
+
+        var spPc  = rv(); var spRs  = rv(); var spA   = rv(); var spB   = rv();
+        var spF1  = rv(); var spF2  = rv(); var spF3  = rv(); var spV1  = rv();
+        var spCd  = rv(); var spBl  = rv(); var spCo  = rv(); var spCo2 = rv();
+        var spJt  = rv(); var spDl  = rv(); var spIdx = rv(); var spK   = rv();
+        var spLp  = rv(); var spLi  = rv(); var spRef = rv();
+        var fakeN1 = (Math.floor(Math.random() * 9000) + 1000) | 0;
+        var fakeN2 = (Math.floor(Math.random() * 9000) + 1000) | 0;
+        var fakeN3 = (Math.floor(Math.random() * 9000) + 1000) | 0;
+
+        out += '  do\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── WEAK: simple if-false dead blocks ───────────────────────────────
+        out += '    local ' + spPc + ' = pcall\\n';
+        out += '    local ' + spRs + ' = rawset\\n';
+        out += '    local ' + spA  + ' = ' + fakeN1 + '\\n';
+        out += '    local ' + spB  + ' = ' + fakeN2 + '\\n';
+        out += '    if ' + spA + ' > ' + spB + ' + ' + (fakeN1 + 1) + ' then\\n';
+        out += '      ' + spRs + '(_G, \'__SPL_DEAD1__\', true)\\n';
+        out += '    end\\n';
+        out += '    if ' + spB + ' < 0 then\\n';
+        out += '      error(\'spoiler_dead_2\')\\n';
+        out += '    end\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── NORMAL: decoy functions (defined, never called) ──────────────────
+        if (doNormal) {
+            out += '    local ' + spF1 + ' = function(x, y)\\n';
+            out += '      return x * y + ' + fakeN3 + '\\n';
+            out += '    end\\n';
+            out += '    local ' + spF2 + ' = function()\\n';
+            out += '      local _t = {}\\n';
+            out += '      for _i = 1, 10 do _t[_i] = _i * 2 end\\n';
+            out += '      return _t\\n';
+            out += '    end\\n';
+            out += '    _ = ' + spF1 + '\\n';
+            out += '    _ = ' + spF2 + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── SMOOTH: runtime-false conditional decoy ──────────────────────────
+        if (doSmooth) {
+            out += '    local ' + spV1 + ' = (os and os.clock and os.clock() or 0) < -9999\\n';
+            out += '    if ' + spV1 + ' then\\n';
+            out += '      for _spl_i = 1, 1000000 do\\n';
+            out += '        if _spl_i == 0 then break end\\n';
+            out += '      end\\n';
+            out += '      error(\'spoiler_smooth_dead\')\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── STRONG: boolean decoy + short-circuit fake path ──────────────────
+        if (doStrong) {
+            out += '    local ' + spCd + ' = false\\n';
+            out += '    local ' + spBl + ' = ' + spCd + ' and (function()\\n';
+            out += '      rawset(_G, \'__SPL_STRONG__\', true)\\n';
+            out += '      return ' + fakeN1 + '\\n';
+            out += '    end)() or nil\\n';
+            out += '    _ = ' + spBl + '\\n';
+            // second decoy: or-chain that never reaches right side
+            out += '    local ' + spF3 + ' = true or (function()\\n';
+            out += '      for _i = 1, ' + fakeN2 + ' do _ = _i end\\n';
+            out += '      return false\\n';
+            out += '    end)()\\n';
+            out += '    _ = ' + spF3 + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── EXTRASTRONG: nested coroutine decoy (created, never resumed) ─────
+        if (doExtraStr) {
+            out += '    local ' + spCo + ' = coroutine.create(function()\\n';
+            out += '      while true do\\n';
+            out += '        rawset(_G, \'__SPL_CO_DEAD__\', true)\\n';
+            out += '        coroutine.yield()\\n';
+            out += '      end\\n';
+            out += '    end)\\n';
+            // nested decoy inside another never-called function
+            out += '    local ' + spCo2 + ' = (function()\\n';
+            out += '      return coroutine.create(function()\\n';
+            out += '        repeat coroutine.yield() until false\\n';
+            out += '      end)\\n';
+            out += '    end)\\n';
+            out += '    _ = ' + spCo + '\\n';
+            out += '    _ = ' + spCo2 + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── AGGRESSIVE: dead loop + obfuscated jump table ────────────────────
+        if (doAggressive) {
+            // Self-referential dead loop (never entered because guard is false)
+            out += '    local ' + spLp + ' = false\\n';
+            out += '    local ' + spRef + ' = nil\\n';
+            out += '    if ' + spLp + ' then\\n';
+            out += '      ' + spRef + ' = function() return ' + spRef + ' end\\n';
+            out += '      while true do\\n';
+            out += '        ' + spRef + ' = ' + spRef + '()\\n';
+            out += '      end\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            // Obfuscated jump table of dead functions
+            out += '    local ' + spJt + ' = {\\n';
+            out += '      [1] = function() return ' + fakeN1 + ' end,\\n';
+            out += '      [2] = function() error(\'dead_jt_2\') end,\\n';
+            out += '      [3] = function() return ' + fakeN2 + ' + ' + fakeN3 + ' end,\\n';
+      out += '      [4] = function() while true do coroutine.yield() end end\\n';
+            out += '    }\\n';
+            out += '    local ' + spIdx + ' = (' + fakeN1 + ' > 99999999) and 1 or nil\\n';
+            out += '    if ' + spIdx + ' then ' + spJt + '[' + spIdx + ']() end\\n';
+            out += '    _ = ' + spJt + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
+    // ── Blur ─────────────────────────────────────────────────────────────────
+    /**
+     * Obfuscates code structure via aliasing, indirection and noise layers.
+     * Makes function names, call patterns and scope invisible to static tools.
+     * Modes: weak < normal < smooth < strong < extrastrong < aggressive
+     */
+    function buildBlur(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doNormal     = (mode !== 'weak');
+        var doSmooth     = (mode === 'smooth' || mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doStrong     = (mode === 'strong' || mode === 'extrastrong' || mode === 'aggressive');
+        var doExtraStr   = (mode === 'extrastrong' || mode === 'aggressive');
+        var doAggressive = (mode === 'aggressive');
+
+        var bPc   = rv(); var bRg   = rv(); var bRs   = rv(); var bTs   = rv();
+        var bTy   = rv(); var bSc   = rv(); var bSl   = rv(); var bMf   = rv();
+        var bW1   = rv(); var bW2   = rv(); var bW3   = rv();
+        var bDt   = rv(); var bPx   = rv(); var bPm   = rv();
+        var bAa   = rv(); var bAb   = rv(); var bAc   = rv(); var bUv   = rv();
+        var bCl1  = rv(); var bCl2  = rv(); var bCl3  = rv(); var bEnv  = rv();
+        var bGr   = rv(); var bVl   = rv(); var bPvl  = rv(); var bCall = rv();
+        var bNk1  = rv(); var bNk2  = rv(); var bNk3  = rv();
+        var STDLIBS = ['pcall','rawget','rawset','tostring','type','string.char','string.byte','string.len','math.floor','table.concat'];
+
+        out += '  do\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── WEAK: alias stdlib to random-named locals ────────────────────────
+        var aliasNames = [bPc, bRg, bRs, bTs, bTy, bSc, bSl, bMf];
+        var aliasSrcs  = ['pcall','rawget','rawset','tostring','type','string.char','string.byte','math.floor'];
+        for (var _ai = 0; _ai < aliasNames.length; _ai++) {
+            out += '    local ' + aliasNames[_ai] + ' = ' + aliasSrcs[_ai] + '\\n';
+        }
+        out += '    _ = ' + bPc + '\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── NORMAL: single-layer wrapper indirection ─────────────────────────
+        if (doNormal) {
+            out += '    local ' + bW1 + ' = function(f, ...)\\n';
+            out += '      return f(...)\\n';
+            out += '    end\\n';
+            out += '    local ' + bW2 + ' = function(t, k)\\n';
+            out += '      return ' + bRg + '(t, k)\\n';
+            out += '    end\\n';
+            out += '    local ' + bW3 + ' = function(t, k, v)\\n';
+            out += '      return ' + bRs + '(t, k, v)\\n';
+            out += '    end\\n';
+            out += '    _ = ' + bW1 + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── SMOOTH: dispatch table + proxy metatable ─────────────────────────
+        if (doSmooth) {
+            out += '    local ' + bDt + ' = {\\n';
+            out += '      pc = ' + bPc + ',\\n';
+            out += '      rg = ' + bRg + ',\\n';
+            out += '      rs = ' + bRs + ',\\n';
+            out += '      ts = ' + bTs + '\\n';
+            out += '    }\\n';
+            out += '    local ' + bPx + ' = setmetatable({}, {\\n';
+            out += '      __index = function(t, k)\\n';
+            out += '        return rawget(' + bDt + ', k)\\n';
+            out += '      end\\n';
+            out += '    })\\n';
+            out += '    _ = ' + bPx + '.pc\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── STRONG: multi-level alias chain A→B→C→stdlib + upvalue ──────────
+        if (doStrong) {
+            // Chain: bAc → bAb → bAa → pcall
+            out += '    local ' + bAa + ' = ' + bPc + '\\n';
+            out += '    local ' + bUv + ' = ' + bAa + '\\n';
+            out += '    local ' + bAb + ' = (function()\\n';
+            out += '      local _uv = ' + bUv + '\\n';
+            out += '      return function(...) return _uv(...) end\\n';
+            out += '    end)()\\n';
+            out += '    local ' + bAc + ' = (function()\\n';
+            out += '      local _uv = ' + bAb + '\\n';
+            out += '      return function(...) return _uv(...) end\\n';
+            out += '    end)()\\n';
+            out += '    _ = ' + bAc + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── EXTRASTRONG: 3-layer closure wrapping + env noise ────────────────
+        if (doExtraStr) {
+            // Triple-wrapped rawget
+            out += '    local ' + bCl1 + ' = function(t, k) return rawget(t, k) end\\n';
+            out += '    local ' + bCl2 + ' = function(t, k) return ' + bCl1 + '(t, k) end\\n';
+            out += '    local ' + bCl3 + ' = function(t, k) return ' + bCl2 + '(t, k) end\\n';
+            out += '    _ = ' + bCl3 + '\\n';
+            // Environment noise: write/read harmless keys
+            out += '    local ' + bEnv + ' = (os and os.clock and math.floor(os.clock() * 1e5) or 0xBEEF) % 65535\\n';
+            out += '    rawset(_G, \'__BLR_ENV__\', ' + bEnv + ')\\n';
+            out += '    _ = rawget(_G, \'__BLR_ENV__\')\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── AGGRESSIVE: self-obfuscating alias graph + pcall veil ────────────
+        if (doAggressive) {
+            // Alias graph: bGr holds refs to wrappers that call each other
+            out += '    local ' + bNk1 + ', ' + bNk2 + ', ' + bNk3 + '\\n';
+            out += '    ' + bNk1 + ' = function(x) return ' + bTs + '(x) end\\n';
+            out += '    ' + bNk2 + ' = function(x) return ' + bNk1 + '(x) end\\n';
+            out += '    ' + bNk3 + ' = function(x) return ' + bNk2 + '(x) end\\n';
+            out += '    local ' + bGr + ' = {' + bNk1 + ', ' + bNk2 + ', ' + bNk3 + '}\\n';
+            out += '    _ = ' + bGr + '[1]\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+            // pcall veil: wrap every stdlib access through pcall
+            out += '    local ' + bPvl + ' = function(f, ...)\\n';
+            out += '      local _ok, _r = pcall(f, ...)\\n';
+            out += '      return _ok and _r or nil\\n';
+            out += '    end\\n';
+            out += '    local ' + bVl + ' = ' + bPvl + '(tostring, 42)\\n';
+            out += '    _ = ' + bVl + '\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
     function startObfuscate() {
         if(_busy) return;
         _busy = true;
@@ -6456,6 +7596,10 @@ function buildAsciiSimple(codes) {
                 o['dbgMode']           = 'strong';
                 o['adv2Mode']          = 'strong';
                 o['atv2Mode']          = 'strong';
+                o['enableADV3']        = true;
+                o['adv3Mode']          = 'level2';
+                o['enableATV3']        = true;
+                o['atv3Mode']          = 'level2';
                 o['csMode']            = 'strong';
                 o['enableCE']          = true;
                 o['ceMode']            = 'strong';
@@ -6463,6 +7607,16 @@ function buildAsciiSimple(codes) {
                 o['rnMode']            = 'strong';
                 o['enableSLC']         = true;
                 o['slcMode']           = 'strong';
+                o['enableENC']         = true;
+                o['encMode']           = 'strong';
+                o['enableBLR']         = true;
+                o['blrMode']           = 'strong';
+                o['enableSPL']         = true;
+                o['splMode']           = 'strong';
+                o['enableNOM']         = true;
+                o['nomMode']           = 'strong';
+                o['enableNRND']        = true;
+                o['nrndMode']          = 'strong';
             } else if (_secLevel === 'extrastrong') {
                 o['enableFakeIf']      = true;
                 o['enableFakeChunks']  = true;
@@ -6480,6 +7634,10 @@ function buildAsciiSimple(codes) {
                 o['dbgMode']           = 'extrastrong';
                 o['adv2Mode']          = 'extrastrong';
                 o['atv2Mode']          = 'extrastrong';
+                o['enableADV3']        = true;
+                o['adv3Mode']          = 'level2';
+                o['enableATV3']        = true;
+                o['atv3Mode']          = 'level2';
                 o['csMode']            = 'extrastrong';
                 o['enableCE']          = true;
                 o['ceMode']            = 'extrastrong';
@@ -6487,6 +7645,16 @@ function buildAsciiSimple(codes) {
                 o['rnMode']            = 'extrastrong';
                 o['enableSLC']         = true;
                 o['slcMode']           = 'extrastrong';
+                o['enableENC']         = true;
+                o['encMode']           = 'extrastrong';
+                o['enableBLR']         = true;
+                o['blrMode']           = 'extrastrong';
+                o['enableSPL']         = true;
+                o['splMode']           = 'extrastrong';
+                o['enableNOM']         = true;
+                o['nomMode']           = 'extrastrong';
+                o['enableNRND']        = true;
+                o['nrndMode']          = 'extrastrong';
             } else if (_secLevel === 'aggressive') {
                 o['enableFakeIf']      = true;
                 o['enableFakeChunks']  = true;
@@ -6507,6 +7675,10 @@ function buildAsciiSimple(codes) {
                 o['dbgMode']           = 'aggressive';
                 o['adv2Mode']          = 'aggressive';
                 o['atv2Mode']          = 'aggressive';
+                o['enableADV3']        = true;
+                o['adv3Mode']          = 'level3';
+                o['enableATV3']        = true;
+                o['atv3Mode']          = 'level3';
                 o['csMode']            = 'aggressive';
                 o['enableCE']          = true;
                 o['ceMode']            = 'aggressive';
@@ -6514,6 +7686,16 @@ function buildAsciiSimple(codes) {
                 o['rnMode']            = 'aggressive';
                 o['enableSLC']         = true;
                 o['slcMode']           = 'aggressive';
+                o['enableENC']         = true;
+                o['encMode']           = 'aggressive';
+                o['enableBLR']         = true;
+                o['blrMode']           = 'aggressive';
+                o['enableSPL']         = true;
+                o['splMode']           = 'aggressive';
+                o['enableNOM']         = true;
+                o['nomMode']           = 'aggressive';
+                o['enableNRND']        = true;
+                o['nrndMode']          = 'aggressive';
             }
             return o;
         })();
@@ -6611,6 +7793,66 @@ function buildAsciiSimple(codes) {
             parts.push(jBlock(2 * JUNK_MULT));
         }
 
+        // ── Blur ──
+        const useBLR  = document.getElementById('enableBLR').checked;
+        const blrMode = document.getElementById('blrMode').value;
+        if (useBLR) {
+            setProgress(3, 'Blur...');
+            const blrRepeat = (blrMode === 'aggressive') ? 3 : (blrMode === 'extrastrong') ? 2 : 1;
+            for (var _blr_i = 0; _blr_i < blrRepeat; _blr_i++) {
+                parts.push(buildBlur(blrMode, JUNK_MULT));
+            }
+            parts.push(jBlock(2 * JUNK_MULT));
+        }
+
+        // ── Spoiler ──
+        const useSPL  = document.getElementById('enableSPL').checked;
+        const splMode = document.getElementById('splMode').value;
+        if (useSPL) {
+            setProgress(3, 'Spoiler...');
+            const splRepeat = (splMode === 'aggressive') ? 3 : (splMode === 'extrastrong') ? 2 : 1;
+            for (var _spl_i = 0; _spl_i < splRepeat; _spl_i++) {
+                parts.push(buildSpoiler(splMode, JUNK_MULT));
+            }
+            parts.push(jBlock(2 * JUNK_MULT));
+        }
+
+        // ── Nomor ──
+        const useNOM  = document.getElementById('enableNOM').checked;
+        const nomMode = document.getElementById('nomMode').value;
+        if (useNOM) {
+            setProgress(3, 'Nomor...');
+            const nomRepeat = (nomMode === 'aggressive') ? 3 : (nomMode === 'extrastrong') ? 2 : 1;
+            for (var _nom_i = 0; _nom_i < nomRepeat; _nom_i++) {
+                parts.push(buildNomor(nomMode, JUNK_MULT));
+            }
+            parts.push(jBlock(2 * JUNK_MULT));
+        }
+
+        // ── Nomor Random ──
+        const useNRND  = document.getElementById('enableNRND').checked;
+        const nrndMode = document.getElementById('nrndMode').value;
+        if (useNRND) {
+            setProgress(3, 'Nomor Random...');
+            const nrndRepeat = (nrndMode === 'aggressive') ? 3 : (nrndMode === 'extrastrong') ? 2 : 1;
+            for (var _nrnd_i = 0; _nrnd_i < nrndRepeat; _nrnd_i++) {
+                parts.push(buildNomorRandom(nrndMode, JUNK_MULT));
+            }
+            parts.push(jBlock(2 * JUNK_MULT));
+        }
+
+        // ── Encryptor ──
+        const useENC  = _secRead('enableENC');
+        const encMode = _secVal('encMode') || document.getElementById('encMode').value;
+        if (useENC) {
+            setProgress(3, 'Encryptor...');
+            const encRepeat = (encMode === 'aggressive') ? 3 : (encMode === 'extrastrong') ? 2 : 1;
+            for (var _enc_i = 0; _enc_i < encRepeat; _enc_i++) {
+                parts.push(buildEncryptor(encMode, JUNK_MULT));
+            }
+            parts.push(jBlock(3 * JUNK_MULT));
+        }
+
         // ── Constant Security ──
         const useCS   = _secRead('enableCS');
         const csMode  = _secVal('csMode') || document.getElementById('csMode').value;
@@ -6638,6 +7880,24 @@ function buildAsciiSimple(codes) {
         if (useATV2) {
             setProgress(10, 'Anti-Tampering V2...');
             parts.push(buildAntiTamperV2(atv2Mode, JUNK_MULT));
+            parts.push(jBlock(3 * JUNK_MULT));
+        }
+
+        // ── Anti-Dump V3 ──
+        const useADV3  = _secRead('enableADV3');
+        const adv3Mode = _secVal('adv3Mode') || document.getElementById('adv3Mode').value;
+        if (useADV3) {
+            setProgress(9, 'Anti-Dump V3...');
+            parts.push(buildAntiDumpV3(adv3Mode, JUNK_MULT));
+            parts.push(jBlock(3 * JUNK_MULT));
+        }
+
+        // ── Anti-Tampering V3 ──
+        const useATV3  = _secRead('enableATV3');
+        const atv3Mode = _secVal('atv3Mode') || document.getElementById('atv3Mode').value;
+        if (useATV3) {
+            setProgress(10, 'Anti-Tampering V3...');
+            parts.push(buildAntiTamperV3(atv3Mode, JUNK_MULT));
             parts.push(jBlock(3 * JUNK_MULT));
         }
 
@@ -7160,7 +8420,7 @@ function buildAsciiSimple(codes) {
     // ── Save / Load / Reset Settings ─────────────────────────────────────────
     var _SETTINGS_KEY = 'ArchiveXNova_Settings_v1';
 
-    var _SETTING_IDS = ["enableAsciiEnc", "asciiMode", "xorKey", "enableIntExpr", "intExprMode", "intExprDepth", "enableNCS", "ncsMode", "ncsParts", "enableFakeIf", "enableFakeChunks", "fakeIntensity", "fakeChunkCount", "enableCFF", "cffMode", "cffStates", "enableVRO", "vroStyle", "vroScope", "enableOP", "opMode", "opCount", "enableAntiDump", "antiDumpMode", "enableAntiTamper", "antiTamperMode", "antiTamperReaction", "enableAntiEnvLog", "antiEnvLogMode", "antiEnvLogNoise", "enableHardCrash", "hardCrashMode", "hardCrashTrigger", "enableLE", "leMode", "leValue", "leReaction", "enableIPP", "ippMode", "ippIntensity", "secLevel", "optLevel", "compatMode", "enableRRO", "rroMode", "optCompileLevel", "enableVMC", "vmcAlgo", "enableIVMS", "ivmsMode", "enableGCF", "gcfMode", "enableSE", "seMode", "enableDBG", "dbgMode", "enableMeow", "meowHookOp", "meowDiscord", "meowComments", "meowRuntimeLogs", "meowLua", "meowConstants", "meowMinifier", "meowSpyExecOnly", "meowExploreFuncs", "meowHttpSpy", "meowReqLogger", "meowBlockReq", "enableCE", "ceMode", "enableRN", "rnMode", "enableSLC", "slcMode", "enableADV2", "adv2Mode", "enableATV2", "atv2Mode"];
+    var _SETTING_IDS = ["enableAsciiEnc", "asciiMode", "xorKey", "enableIntExpr", "intExprMode", "intExprDepth", "enableNCS", "ncsMode", "ncsParts", "enableFakeIf", "enableFakeChunks", "fakeIntensity", "fakeChunkCount", "enableCFF", "cffMode", "cffStates", "enableVRO", "vroStyle", "vroScope", "enableOP", "opMode", "opCount", "enableAntiDump", "antiDumpMode", "enableAntiTamper", "antiTamperMode", "antiTamperReaction", "enableAntiEnvLog", "antiEnvLogMode", "antiEnvLogNoise", "enableHardCrash", "hardCrashMode", "hardCrashTrigger", "enableLE", "leMode", "leValue", "leReaction", "enableIPP", "ippMode", "ippIntensity", "secLevel", "optLevel", "compatMode", "enableRRO", "rroMode", "optCompileLevel", "enableVMC", "vmcAlgo", "enableIVMS", "ivmsMode", "enableGCF", "gcfMode", "enableSE", "seMode", "enableDBG", "dbgMode", "enableMeow", "meowHookOp", "meowDiscord", "meowComments", "meowRuntimeLogs", "meowLua", "meowConstants", "meowMinifier", "meowSpyExecOnly", "meowExploreFuncs", "meowHttpSpy", "meowReqLogger", "meowBlockReq", "enableBLR", "blrMode", "enableSPL", "splMode", "enableNOM", "nomMode", "enableNRND", "nrndMode", "enableENC", "encMode", "enableCE", "ceMode", "enableRN", "rnMode", "enableSLC", "slcMode", "enableADV2", "adv2Mode", "enableATV2", "atv2Mode", "enableADV3", "adv3Mode", "enableATV3", "atv3Mode"];
 
     function saveSettings() {
         var data = {};
