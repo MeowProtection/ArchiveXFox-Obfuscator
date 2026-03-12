@@ -16,6 +16,9 @@
         #pastefyBtn { background: #b5451b; }
         #pastefyBtn:hover:not(:disabled) { background: #d4561f; }
         #pastefyBtn.uploaded { background: #2e7d32; }
+        #rubisBtn { background: #1a6b9a; }
+        #rubisBtn:hover:not(:disabled) { background: #2288c0; }
+        #rubisBtn.uploaded { background: #2e7d32; }
         h1 { color: #569cd6; }
         label { font-weight: bold; display: block; margin-top: 10px; }
         .btn-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
@@ -1254,6 +1257,8 @@
         <button id="copyBtn" onclick="copyOutput()" disabled>ðŸ“‹ Copy Output</button>
         <button id="dlBtn"   onclick="downloadOutput()" disabled>ðŸ’¾ Download .lua</button>
         <button id="pastefyBtn" onclick="uploadToPastefy()" disabled>ðŸŒ Upload to Pastefy</button>
+    
+        <button id="rubisBtn" onclick="uploadToRubis()" disabled>&#128640; Upload to Rubi&#353;</button>
     </div>
 
     <script>
@@ -7500,6 +7505,7 @@ function buildAsciiSimple(codes) {
         document.getElementById('copyBtn').disabled   = true;
         document.getElementById('dlBtn').disabled     = true;
         document.getElementById('pastefyBtn').disabled = true;
+        document.getElementById('rubisBtn').disabled = true;
         document.getElementById('output').textContent = '';
         document.getElementById('charCount').textContent = '';
         document.getElementById('progWrap').style.display = 'block';
@@ -7521,6 +7527,7 @@ function buildAsciiSimple(codes) {
             document.getElementById('copyBtn').disabled   = true;
             document.getElementById('dlBtn').disabled     = true;
             document.getElementById('pastefyBtn').disabled= true;
+            document.getElementById('rubisBtn').disabled = true;
             _busy = false;
             console.error('[ArchiveXNova] runObfuscate error:', err);
         }
@@ -8348,6 +8355,7 @@ function buildAsciiSimple(codes) {
         document.getElementById('copyBtn').disabled   = false;
         document.getElementById('dlBtn').disabled     = false;
         document.getElementById('pastefyBtn').disabled = false;
+        document.getElementById('rubisBtn').disabled = false;
         _busy = false;
     }
 
@@ -8412,6 +8420,50 @@ function buildAsciiSimple(codes) {
             btn.textContent = 'âŒ Gagal!';
             setTimeout(()=>{
                 btn.textContent = 'ðŸŒ Upload to Pastefy';
+                btn.disabled = false;
+            }, 3000);
+        }
+    }
+
+    async function uploadToRubis() {
+        const text = document.getElementById('output').textContent;
+        if(!text || text === '(klik Obfuscate untuk mulai)') return;
+        const btn = document.getElementById('rubisBtn');
+        btn.disabled = true;
+        btn.textContent = '⏳ Uploading...';
+        try {
+            const resp = await fetch('https://rubis.app/api/pastes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: 'obfuscated_ArchiveXNova.lua',
+                    content: text,
+                    language: 'lua',
+                    visibility: 'unlisted'
+                })
+            });
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            const data = await resp.json();
+            const url = (data.url) ? data.url
+                      : (data.id)  ? 'https://rubis.app/' + data.id
+                      : null;
+            if (url) {
+                btn.textContent = '✅ Uploaded!';
+                btn.classList.add('uploaded');
+                window.open(url, '_blank');
+                navigator.clipboard.writeText(url).catch(()=>{});
+                setTimeout(()=>{
+                    btn.textContent = '&#128640; Upload to Rubiš';
+                    btn.classList.remove('uploaded');
+                    btn.disabled = false;
+                }, 4000);
+            } else {
+                throw new Error('URL tidak ditemukan dalam respons');
+            }
+        } catch(e) {
+            btn.textContent = '❌ Gagal!';
+            setTimeout(()=>{
+                btn.textContent = '&#128640; Upload to Rubiš';
                 btn.disabled = false;
             }, 3000);
         }
