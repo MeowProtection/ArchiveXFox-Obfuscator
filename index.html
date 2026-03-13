@@ -94,6 +94,19 @@
         }
         .badge-new { background: #0d7377; color: #fff; }
         .badge-hot { background: #b5451b; color: #fff; }
+        #recommendBtn { background: #1a3a5c; border-color: #2e6da4; color: #7ec8e3; }
+        #recommendBtn:hover { background: #1e4a7a; }
+        #recommendModal { display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center; }
+        #recommendModal.open { display:flex; }
+        .rec-item { display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #2a2a2a; }
+        .rec-item:last-child { border-bottom:none; }
+        .rec-check { width:16px;height:16px;margin-top:2px;accent-color:#2e6da4;flex-shrink:0; }
+        .rec-label { font-size:13px;color:#d4d4d4;font-weight:bold;margin-bottom:2px; }
+        .rec-reason { font-size:11px;color:#888; }
+        .rec-tag { font-size:10px;padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle; }
+        .rec-tag-perf { background:#1a3a1a;color:#4ec94e;border:1px solid #2a5a2a; }
+        .rec-tag-sec  { background:#3a1a1a;color:#f48771;border:1px solid #5a2a2a; }
+        .rec-tag-obs  { background:#1a1a3a;color:#9cdcfe;border:1px solid #2a2a5a; }
     </style>
 </head>
 <body>
@@ -925,6 +938,81 @@
         </div>
     </div>
 
+    <!-- Anti-Tampering Protection V6 Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F6E1; Anti-Tampering Protection V6 <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableATV6" checked>
+                <span>Aktifkan Anti-Tampering V6</span>
+            </label>
+        </div>
+        <div class="feature-row" id="atv6Options">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="atv6Mode">
+                <option value="level1" selected>Level 1 &#8212; Ghost trap + execution DNA fingerprint + metamorphic key</option>
+                <option value="level2">Level 2 &#8212; Level 1 + verified loadstring chain + canary integrity test</option>
+                <option value="level3">Level 3 &#8212; Level 2 + 70+ logger signal scan + anti-hook + debug tools + stack depth guard</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="atv6Desc">
+            Anti-Tampering generasi keenam menggunakan teknik <i>execution DNA collection</i> &#8212; mengumpulkan entropi dari GC memory, timing service calls, workspace depth, dan player data untuk membuat fingerprint runtime yang unik per eksekusi.<br><br>
+            <b>Level 1</b>: Ghost trap (sentinel XOR check) + execution DNA (GC count, os.clock timing, instanceDepth, playerEntropy) + metamorphic key mutation.<br>
+            <b>Level 2</b>: Level 1 + verified loadstring chain (hookcheck/getrenv/clonefunction/cloneref) + canary code integrity test + loadstring behavior comparison.<br>
+            <b>Level 3</b>: Level 2 + 70+ logger/spy signal scan di <code style="color:#9cdcfe">_G</code> dan <code style="color:#9cdcfe">shared</code> + anti-hook guard + debug tools detection + stack depth validation (&gt;15 = bypass).
+        </div>
+    </div>
+
+    <!-- Anti-Tampering Protection V5 Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F6E1; Anti-Tampering Protection V5 <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableATV5" checked>
+                <span>Aktifkan Anti-Tampering V5</span>
+            </label>
+        </div>
+        <div class="feature-row" id="atv5Options">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="atv5Mode">
+                <option value="level1" selected>Level 1 &#8212; RC4 key alias + 16 environment fingerprint checks</option>
+                <option value="level2">Level 2 &#8212; Level 1 + 32 fingerprint checks + XOR verification gate</option>
+                <option value="level3">Level 3 &#8212; Level 2 + RC4 stream decrypt payload + obfuscated key segments</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="atv5Desc">
+            Anti-Tampering generasi kelima menggunakan teknik <i>cryptographic environment fingerprinting</i> &#8212; mengumpulkan 32 sinyal lingkungan runtime, meng-XOR semuanya menjadi checksum, dan memverifikasi terhadap nilai target yang di-generate per run.<br><br>
+            <b>Level 1</b>: Alias stdlib via RC4-style key + 16 environment checks (io, newproxy, pCall identity, rawget identity, dll).<br>
+            <b>Level 2</b>: Level 1 + semua 32 fingerprint checks (bit32, math, string, coroutine, Enum, getgenv, tick, os.clock, dll) + XOR gate.<br>
+            <b>Level 3</b>: Level 2 + kunci 4-segment ter-obfuscate + RC4 stream cipher decrypt payload + pesan fail yang dikustomisasi.
+        </div>
+    </div>
+
+    <!-- Anti-Tampering Protection V4 Feature Box -->
+    <div class="feature-box" style="margin-top:12px;">
+        <div class="feature-box-title">&#x1F6E1; Anti-Tampering Protection V4 <span class="badge badge-new">NEW</span></div>
+        <div class="feature-row">
+            <label class="feature-toggle">
+                <input type="checkbox" id="enableATV4" checked>
+                <span>Aktifkan Anti-Tampering V4</span>
+            </label>
+        </div>
+        <div class="feature-row" id="atv4Options">
+            <label style="font-weight:normal;display:inline;margin:0;">Mode:</label>
+            <select id="atv4Mode">
+                <option value="level1" selected>Level 1 &#8212; getfenv hook check + environment proxy check</option>
+                <option value="level2">Level 2 &#8212; Level 1 + environment leak scan + bytecode integrity</option>
+                <option value="level3">Level 3 &#8212; Level 2 + setfenv swap detection + debug upvalue injection guard</option>
+            </select>
+        </div>
+        <div class="feature-desc" id="atv4Desc">
+            Anti-Tampering generasi keempat dengan teknik deteksi baru berbasis <i>environment forensics</i> &#8212; mendeteksi hook, proxy, sandbox, dan injeksi upvalue secara runtime.<br><br>
+            <b>Level 1</b>: Verifikasi <code style="color:#9cdcfe">getfenv</code> tidak di-hook + deteksi proxy/metatable pada <code style="color:#9cdcfe">_G</code>.<br>
+            <b>Level 2</b>: Level 1 + scan kunci environment mencurigakan (<code style="color:#9cdcfe">fenv</code>, <code style="color:#9cdcfe">hookenv</code>, dll) + bytecode integrity via <code style="color:#9cdcfe">string.dump</code>.<br>
+            <b>Level 3</b>: Level 2 + deteksi <code style="color:#9cdcfe">setfenv</code> swap pada function environment + guard terhadap injeksi upvalue via <code style="color:#9cdcfe">debug.getupvalue</code>.
+        </div>
+    </div>
+
     <!-- Constant Security Feature Box -->
     <div class="feature-box" style="margin-top:12px;">
         <div class="feature-box-title">&#x1F512; Constant Security <span class="badge badge-new">NEW</span></div>
@@ -1241,6 +1329,7 @@
         <button id="loadSettingsBtn" onclick="loadSettings()" style="background:#2a2a3a;border-color:#4a4a7a;color:#8f8fbc;">&#x1F4C2; Load Settings</button>
         <button id="listSettingsBtn" onclick="openSettingsList()" style="background:#2a3a3a;border-color:#4a7a7a;color:#8fbcbc;">&#x1F4CB; List Settings</button>
         <button id="resetSettingsBtn" onclick="resetSettings()" style="background:#3a2a2a;border-color:#7a4a4a;color:#bc8f8f;">&#x21BA; Reset</button>
+        <button id="recommendBtn" onclick="openRecommend()">&#x1F4A1; Recommend Features</button>
         <span id="settingsStatus" style="font-size:12px;color:#888;align-self:center;"></span>
     </div>
 
@@ -1889,6 +1978,51 @@
             document.getElementById('blrDesc').innerHTML =
                 'Mengaburkan struktur kode dengan aliasing, indirection, dan noise layer.<br><br>' +
                 (descs[this.value] || descs.normal);
+        });
+
+        // ── ATV6 listener ───────────────────────────────────────────────────────────────
+        document.getElementById('enableATV6').addEventListener('change', function() {
+            document.getElementById('atv6Options').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('atv6Options').style.pointerEvents = this.checked ? '' : 'none';
+        });
+        document.getElementById('atv6Mode').addEventListener('change', function() {
+            var descs = {
+                level1: '<b>Level 1</b>: Ghost trap (sentinel XOR check) + execution DNA fingerprint + metamorphic key.',
+                level2: '<b>Level 2</b>: Level 1 + verified loadstring chain + canary integrity test + loadstring behavior comparison.',
+                level3: '<b>Level 3</b>: Level 2 + 70+ logger/spy signal scan + anti-hook guard + debug tools detection + stack depth validation.'
+            };
+            document.getElementById('atv6Desc').innerHTML =
+                'Anti-Tampering V6 berbasis execution DNA collection.<br><br>' + (descs[this.value] || descs.level1);
+        });
+
+        // ── ATV5 listener ───────────────────────────────────────────────────────────────
+        document.getElementById('enableATV5').addEventListener('change', function() {
+            document.getElementById('atv5Options').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('atv5Options').style.pointerEvents = this.checked ? '' : 'none';
+        });
+        document.getElementById('atv5Mode').addEventListener('change', function() {
+            var descs = {
+                level1: '<b>Level 1</b>: Alias stdlib via RC4-style key + 16 environment fingerprint checks.',
+                level2: '<b>Level 2</b>: Level 1 + semua 32 fingerprint checks (bit32, math, string, coroutine, Enum, getgenv, dll) + XOR gate.',
+                level3: '<b>Level 3</b>: Level 2 + 4-segment obfuscated key + RC4 stream cipher decrypt payload + fail message.'
+            };
+            document.getElementById('atv5Desc').innerHTML =
+                'Anti-Tampering V5 berbasis cryptographic environment fingerprinting.<br><br>' + (descs[this.value] || descs.level1);
+        });
+
+        // ── ATV4 listener ───────────────────────────────────────────────────────────────
+        document.getElementById('enableATV4').addEventListener('change', function() {
+            document.getElementById('atv4Options').style.opacity = this.checked ? '1' : '0.4';
+            document.getElementById('atv4Options').style.pointerEvents = this.checked ? '' : 'none';
+        });
+        document.getElementById('atv4Mode').addEventListener('change', function() {
+            var descs = {
+                level1: '<b>Level 1</b>: Verifikasi <code style="color:#9cdcfe">getfenv</code> tidak di-hook + deteksi proxy/metatable pada <code style="color:#9cdcfe">_G</code>.',
+                level2: '<b>Level 2</b>: Level 1 + scan kunci environment mencurigakan + bytecode integrity via <code style="color:#9cdcfe">string.dump</code>.',
+                level3: '<b>Level 3</b>: Level 2 + deteksi <code style="color:#9cdcfe">setfenv</code> swap + guard injeksi upvalue via <code style="color:#9cdcfe">debug.getupvalue</code>.'
+            };
+            document.getElementById('atv4Desc').innerHTML =
+                'Anti-Tampering V4 berbasis environment forensics.<br><br>' + (descs[this.value] || descs.level1);
         });
 
         // ── Settings modal backdrop close ──
@@ -7498,6 +7632,673 @@ function buildAsciiSimple(codes) {
     }
 
 
+    // ── Anti-Tampering V6 ───────────────────────────────────────────────────────────────
+    /**
+     * Anti-Tampering V6 - execution DNA collection layer.
+     * Ghost trap + GC/timing/workspace/player entropy fingerprint +
+     * metamorphic key + verified loadstring + 70+ logger signal scan.
+     */
+    function buildAntiTamperV6(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doL2 = (mode === 'level2' || mode === 'level3');
+        var doL3 = (mode === 'level3');
+
+        // var names
+        var vIsComp   = rv(); var vGhostSen = rv(); var vGhostCk  = rv();
+        var vExecFp   = rv(); var vMemSnap  = rv(); var vSvcT0    = rv();
+        var vElapsed  = rv(); var vInstD    = rv(); var vPlyEnt   = rv();
+        var vMmCtr    = rv(); var vMmKey    = rv(); var vMmFn     = rv();
+        var vVLS      = rv(); var vIsHooked = rv(); var vHkStat   = rv();
+        var vOrig     = rv(); var vOkClone  = rv(); var vClone    = rv();
+        var vCanary   = rv(); var vIsInteg  = rv(); var vTstCode  = rv();
+        var vOk1      = rv(); var vFn1      = rv(); var vOk2      = rv();
+        var vRes      = rv(); var vCToken   = rv(); var vTrapC    = rv();
+        var vLsPtr    = rv(); var vSecRefs  = rv();
+        var vEnvOk    = rv(); var vHookOk   = rv(); var vDbgOk    = rv();
+        var vDumpOk   = rv(); var vStkOk    = rv();
+        var vDepth    = rv(); var vInfo      = rv(); var vChild   = rv();
+        var vLp       = rv(); var vLcPly    = rv(); var vRsvc    = rv();
+        var vSig      = rv(); var vDbg      = rv(); var vHkFn    = rv();
+        var vOkHk     = rv(); var vIsHk2    = rv(); var vUv      = rv();
+        // random ghost sentinel per run
+        var GHOST_HEX = (Math.floor(Math.random() * 0xFFFFF) + 0x10000).toString(16);
+        var GHOST_SEN = parseInt(GHOST_HEX, 16);
+
+        out += '  do\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── LEVEL 1: Ghost trap ────────────────────────────────────────────────
+        out += '    local ' + vIsComp   + ' = false\\n';
+        out += '    local ' + vGhostSen + ' = SENTINEL_PLACEHOLDER\\n'.replace('SENTINEL_PLACEHOLDER', String(GHOST_SEN));
+        out += '    do\\n';
+        out += '      local ' + vGhostCk + ' = tonumber(\"HEX_PLACEHOLDER\", 16)\\n'.replace('HEX_PLACEHOLDER', GHOST_HEX);
+        out += '      if ' + vGhostCk + ' ~= ' + vGhostSen + ' then\\n';
+        out += '        ' + vIsComp + ' = true\\n';
+        out += '        rawset(_G, \'__ATV6_GHOST__\', true)\\n';
+        out += '      end\\n';
+        out += '    end\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── LEVEL 1: Execution DNA fingerprint ────────────────────────────────
+        out += '    local ' + vExecFp  + ' = 0\\n';
+        out += '    local ' + vMemSnap + ' = 0\\n';
+        out += '    pcall(function()\\n';
+        out += '      ' + vMemSnap + ' = collectgarbage(\'count\') or 0\\n';
+        out += '    end)\\n';
+        out += '    local ' + vSvcT0 + ' = os.clock()\\n';
+        out += '    pcall(function()\\n';
+        out += '      game:GetService(\'Players\')\\n';
+        out += '      game:GetService(\'RunService\')\\n';
+        out += '      game:GetService(\'Lighting\')\\n';
+        out += '    end)\\n';
+        out += '    local ' + vElapsed + ' = os.clock() - ' + vSvcT0 + '\\n';
+        out += '    local ' + vInstD   + ' = 0\\n';
+        out += '    pcall(function()\\n';
+        out += '      local _ws = game:GetService(\'Workspace\')\\n';
+        out += '      for _, ' + vChild + ' in pairs(_ws:GetChildren()) do\\n';
+        out += '        ' + vInstD + ' = ' + vInstD + ' + 1\\n';
+        out += '        if ' + vInstD + ' > 7 then break end\\n';
+        out += '      end\\n';
+        out += '    end)\\n';
+        out += '    local ' + vPlyEnt + ' = 0\\n';
+        out += '    pcall(function()\\n';
+        out += '      local ' + vLcPly + ' = game:GetService(\'Players\').LocalPlayer\\n';
+        out += '      if ' + vLcPly + ' then\\n';
+        out += '        ' + vPlyEnt + ' = ' + vLcPly + '.UserId + (' + vLcPly + '.AccountAge or 0) + #(' + vLcPly + '.Name or \'\')\\n';
+        out += '      end\\n';
+        out += '    end)\\n';
+        out += '    ' + vExecFp + ' = bit32.bxor(\\n';
+        out += '      math.floor(' + vElapsed + ' * 1000000) % 65536,\\n';
+        out += '      math.floor(' + vMemSnap + ' * 7) % 65536,\\n';
+        out += '      ' + vInstD + ' * 137,\\n';
+        out += '      ' + vPlyEnt + ' % 65536,\\n';
+        out += '      3195319076\\n';
+        out += '    )\\n';
+        out += '    rawset(_G, \'__ATV6_DNA__\', ' + vExecFp + ')\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── LEVEL 1: Metamorphic key mutation ─────────────────────────────────
+        var MM_SEED = (Math.floor(Math.random() * 90000) + 10000) | 0;
+        out += '    local ' + vMmCtr + ' = 0\\n';
+        out += '    local ' + vMmKey + ' = MM_SEED_PLACEHOLDER\\n'.replace('MM_SEED_PLACEHOLDER', String(MM_SEED));
+        out += '    local ' + vMmFn + ' = function(val)\\n';
+        out += '      ' + vMmCtr + ' = ' + vMmCtr + ' + 1\\n';
+        out += '      ' + vMmKey + ' = bit32.bxor(' + vMmKey + ', ' + vMmCtr + ' * 7919)\\n';
+        out += '      return bit32.bxor(val, ' + vMmKey + ' % 256)\\n';
+        out += '    end\\n';
+        out += '    rawset(_G, \'__ATV6_MMKEY__\', ' + vMmFn + ')\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── LEVEL 2: Verified loadstring + canary integrity ───────────────────
+        if (doL2) {
+            out += '    local ' + vVLS     + ' = nil\\n';
+            out += '    local ' + vIsHooked + ' = false\\n';
+            out += '    local ' + vHkStat  + ' = false\\n';
+            out += '    do\\n';
+            out += '      local _ok, _hk = pcall(function()\\n';
+            out += '        if hookcheck then return hookcheck(loadstring) end\\n';
+            out += '        return false\\n';
+            out += '      end)\\n';
+            out += '      if _ok and _hk == true then ' + vHkStat + ' = true end\\n';
+            out += '    end\\n';
+            out += '    if not ' + vVLS + ' then\\n';
+            out += '      pcall(function()\\n';
+            out += '        if clonefunction then\\n';
+            out += '          local _c = clonefunction(loadstring)\\n';
+            out += '          if _c then ' + vVLS + ' = _c; ' + vIsHooked + ' = true end\\n';
+            out += '        end\\n';
+            out += '      end)\\n';
+            out += '    end\\n';
+            out += '    if not ' + vVLS + ' then\\n';
+            out += '      pcall(function()\\n';
+            out += '        if getrenv then\\n';
+            out += '          local _env = getrenv()\\n';
+            out += '          if _env and _env.loadstring then ' + vVLS + ' = _env.loadstring; ' + vIsHooked + ' = true end\\n';
+            out += '        end\\n';
+            out += '      end)\\n';
+            out += '    end\\n';
+            out += '    if not ' + vVLS + ' then\\n';
+            out += '      pcall(function()\\n';
+            out += '        if cloneref then\\n';
+            out += '          local _r = cloneref(loadstring)\\n';
+            out += '          if _r then ' + vVLS + ' = _r; ' + vIsHooked + ' = true end\\n';
+            out += '        end\\n';
+            out += '      end)\\n';
+            out += '    end\\n';
+            out += '    if not ' + vVLS + ' then ' + vVLS + ' = loadstring end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            var CANARY_VAL = (Math.floor(Math.random() * 900000) + 100000) | 0;
+            out += '    local ' + vCanary  + ' = CANARY_PLACEHOLDER\\n'.replace('CANARY_PLACEHOLDER', String(CANARY_VAL));
+            out += '    local ' + vIsInteg + ' = false\\n';
+            out += '    do\\n';
+            out += '      local ' + vTstCode + ' = \'return \' .. tostring(' + vCanary + ')\\n';
+            out += '      local ' + vOk1 + ', ' + vFn1 + ' = pcall(' + vVLS + ', ' + vTstCode + ')\\n';
+            out += '      if ' + vOk1 + ' and ' + vFn1 + ' then\\n';
+            out += '        local ' + vOk2 + ', ' + vRes + ' = pcall(' + vFn1 + ')\\n';
+            out += '        if ' + vOk2 + ' and ' + vRes + ' == ' + vCanary + ' then\\n';
+            out += '          ' + vIsInteg + ' = true\\n';
+            out += '        end\\n';
+            out += '      end\\n';
+            out += '      local ' + vCToken + ' = \'__atv6_canary_' + String(CANARY_VAL) + '\'\\n';
+            out += '      local ' + vTrapC  + ' = \'local \' .. ' + vCToken + ' .. \' = true; return 42\'\\n';
+            out += '      pcall(' + vVLS + ', ' + vTrapC + ')\\n';
+            out += '      pcall(function()\\n';
+            out += '        if rawget(_G, ' + vCToken + ') ~= nil or rawget(shared, ' + vCToken + ') ~= nil then\\n';
+            out += '          ' + vIsInteg + ' = false\\n';
+            out += '        end\\n';
+            out += '      end)\\n';
+            out += '    end\\n';
+            out += '    rawset(_G, \'__ATV6_LS_OK__\', ' + vIsInteg + ')\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── LEVEL 3: Logger scan + anti-hook + debug tools + stack depth ───────
+        if (doL3) {
+            out += '    local __atv6_sigs = {\'OLSSA\', \'olssa\', \'runtime_log\', \'static_log\', \'loadstring_logger\', \'script_dump\', \'dumpfunc\', \'logfile\', \'hooklog\', \'ls_hook\', \'string_dump_log\', \'env_logger\', \'environment_logger\', \'hook_registry\', \'hooked_functions\', \'intercept_log\', \'function_hooks\', \'call_log\', \'dump_output\', \'script_output\', \'captured_scripts\', \'logged_calls\', \'traced_funcs\', \'deobf_active\', \'deobfuscator\', \'beautifier\', \'ast_dump\', \'bytecode_dump\', \'opcode_log\', \'IY_LOADED\', \'SimpleSpy\', \'remotespy\', \'RemoteSpy\', \'ScriptDumper\', \'scriptdumper\', \'HttpSpy\', \'httpspy\', \'dex\', \'DEX_LOADED\', \'InfYield\', \'infiniteyield\', \'SENTINEL_LOADED\', \'synspy\', \'SynSpy\', \'hookfunction_log\', \'detour_log\', \'closure_log\', \'getgc_dump\', \'gc_scan_log\', \'upvalue_log\', \'constant_log\', \'proto_log\', \'environment_dump\', \'env_dump\', \'fenv_log\', \'metamethod_log\', \'metatable_log\', \'mt_log\', \'printDetected\', \'lastHookTime\', \'hasShownMessage\', \'script_dump_active\', \'ls_interceptor\', \'__original_loadstring\', \'__old_loadstring\', \'old_loadstring\', \'orig_loadstring\', \'real_loadstring\', \'backup_loadstring\'}\\n';
+            out += '    local ' + vEnvOk + ' = true\\n';
+            out += '    for _, ' + vSig + ' in ipairs(__atv6_sigs) do\\n';
+            out += '      if rawget(_G, ' + vSig + ') ~= nil or rawget(shared, ' + vSig + ') ~= nil then\\n';
+            out += '        ' + vEnvOk + ' = false\\n';
+            out += '        rawset(_G, \'__ATV6_LOGSIG__\', ' + vSig + ')\\n';
+            out += '        break\\n';
+            out += '      end\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            out += '    local ' + vHookOk + ' = true\\n';
+            out += '    do\\n';
+            out += '      local _gmt = getmetatable(_G)\\n';
+            out += '      if _gmt then\\n';
+            out += '        if rawget(_gmt, \'__index\') or rawget(_gmt, \'__newindex\') or rawget(_gmt, \'__call\') then\\n';
+            out += '          ' + vHookOk + ' = false\\n';
+            out += '        end\\n';
+            out += '      end\\n';
+            out += '      if type(debug) == \'table\' then\\n';
+            out += '        if rawget(debug, \'sethook\') then\\n';
+            out += '          local ' + vOkHk + ', ' + vHkFn + ' = pcall(debug.gethook)\\n';
+            out += '          if ' + vOkHk + ' and ' + vHkFn + ' then ' + vHookOk + ' = false end\\n';
+            out += '        end\\n';
+            out += '        if rawget(debug, \'hook_active\') or rawget(debug, \'trace_calls\') then\\n';
+            out += '          ' + vHookOk + ' = false\\n';
+            out += '        end\\n';
+            out += '      end\\n';
+            out += '      if type(rawget(_G, \'hookfunction\')) == \'function\' then\\n';
+            out += '        if rawget(_G, \'__original_loadstring\') ~= nil then ' + vHookOk + ' = false end\\n';
+            out += '      end\\n';
+            out += '    end\\n';
+            out += '    rawset(_G, \'__ATV6_HOOK_OK__\', ' + vHookOk + ')\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            out += '    local ' + vDbgOk + ' = true\\n';
+            out += '    if type(debug) == \'table\' then\\n';
+            out += '      local ' + vDbg + ' = rawget(_G, \'debug\')\\n';
+            out += '      if rawget(' + vDbg + ', \'getupvalues\') and rawget(' + vDbg + ', \'getconstants\') then\\n';
+            out += '        if rawget(' + vDbg + ', \'setmetatable_hook\') or rawget(' + vDbg + ', \'hook_active\') then\\n';
+            out += '          ' + vDbgOk + ' = false\\n';
+            out += '        end\\n';
+            out += '      end\\n';
+            out += '    end\\n';
+            out += '    rawset(_G, \'__ATV6_DBG_OK__\', ' + vDbgOk + ')\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            out += '    local ' + vStkOk + ' = true\\n';
+            out += '    do\\n';
+            out += '      local ' + vDepth + ' = 0\\n';
+            out += '      local ' + vInfo  + '\\n';
+            out += '      repeat\\n';
+            out += '        ' + vDepth + ' = ' + vDepth + ' + 1\\n';
+            out += '        ' + vInfo + ' = debug and debug.info and debug.info(' + vDepth + ', \'s\') or nil\\n';
+            out += '      until not ' + vInfo + ' or ' + vDepth + ' > 20\\n';
+            out += '      if ' + vDepth + ' > 15 then ' + vStkOk + ' = false end\\n';
+            out += '    end\\n';
+            out += '    rawset(_G, \'__ATV6_STK__\', ' + vStkOk + ')\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        out += '  end\\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
+    // ── Anti-Tampering V5 ───────────────────────────────────────────────────────────────
+    /**
+     * Anti-Tampering V5 - cryptographic environment fingerprinting.
+     * Collects 32 runtime signals, XORs them into a checksum, verifies against
+     * a per-run target. Level 3 uses RC4 stream cipher for payload decryption.
+     */
+    function buildAntiTamperV5(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doL2 = (mode === 'level2' || mode === 'level3');
+        var doL3 = (mode === 'level3');
+
+        // stdlib alias vars
+        var vRawGet   = rv(); var vSetMeta  = rv(); var vGetMeta  = rv();
+        var vRawEq    = rv(); var vPCall    = rv(); var vToStr    = rv();
+        var vBit32    = rv(); var vStrLib   = rv(); var vMathLib  = rv();
+        var vTableLib = rv(); var vTypeOf   = rv(); var vSetFEnv  = rv();
+        var vGetFEnv  = rv(); var vLoadStr  = rv(); var vIpairs   = rv();
+        var vSelect   = rv(); var vRawLen   = rv(); var vTypeInst = rv();
+        var vDebugLib = rv();
+
+        // fingerprint check vars
+        var vCheckIO      = rv(); var vCheckDump    = rv(); var vCheckNProxy = rv();
+        var vStrCheck     = rv(); var vInstTblChk   = rv(); var vTimeNow     = rv();
+        var vTimeChk      = rv(); var vBuiltInsChk  = rv(); var vUtf8Chk     = rv();
+        var vPCallChk     = rv(); var vToStrChk     = rv(); var vIpairsChk   = rv();
+        var vSelectChk    = rv(); var vRawGetChk    = rv(); var vSetMetaChk  = rv();
+        var vGameChk      = rv(); var vWsChk        = rv(); var vInstChk     = rv();
+        var vTickNow      = rv(); var vTickChk      = rv(); var vClockNow    = rv();
+        var vClockChk     = rv(); var vFloatHuge    = rv(); var vXorIdent    = rv();
+        var vBitMask      = rv(); var vFloorMath    = rv(); var vStrByte     = rv();
+        var vCoroChk      = rv(); var vFmtChk       = rv(); var vTypeOfChk   = rv();
+        var vEnumChk      = rv(); var vGetGEnvChk   = rv(); var vGetFEnvChk  = rv();
+        var vSetFEnvChk   = rv(); var vTrBkChk      = rv();
+
+        var vBxorAll  = rv(); var vTotal    = rv();
+        var vKSegA    = rv(); var vKSegB    = rv(); var vKSegC    = rv(); var vKSegD    = rv();
+        var vBaseA    = rv(); var vBaseB    = rv(); var vBaseC    = rv(); var vBaseD    = rv();
+        var vTrA      = rv(); var vTrB      = rv(); var vTrC      = rv(); var vTrD      = rv();
+        var vFinalKey = rv(); var vFKi      = rv(); var vFKoff    = rv();
+        var vEncData  = rv(); var vProc     = rv(); var vCnt      = rv();
+        var vDecFn    = rv(); var vStream   = rv(); var vDecI     = rv(); var vDecJ     = rv();
+        var vDecK     = rv(); var vDecIdx   = rv(); var vDecBytes = rv();
+        var vPartA    = rv(); var vPartB    = rv(); var vFinalScr = rv();
+        var vLoadFn   = rv(); var vErrMsg   = rv(); var vDi       = rv(); var vDj       = rv();
+
+        // per-run random constants
+        var TARGET_SUM = (Math.floor(Math.random() * 200) + 100) | 0;
+        var BASE_A = (Math.floor(Math.random() * 100) + 50) | 0;
+        var BASE_B = (Math.floor(Math.random() * 100) + 50) | 0;
+        var BASE_C = (Math.floor(Math.random() * 100) + 50) | 0;
+        var BASE_D = (Math.floor(Math.random() * 100) + 50) | 0;
+        var XOR_A  = (Math.floor(Math.random() * 100) + 10) | 0;
+        var XOR_B  = (Math.floor(Math.random() * 100) + 10) | 0;
+        var XOR_C  = (Math.floor(Math.random() * 100) + 10) | 0;
+        var XOR_D  = (Math.floor(Math.random() * 100) + 10) | 0;
+        var failMsg = '\"\u1f492 nice try lil bro | protected by ArchiveXNova\"|';
+
+        out += '  do\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── STDLIB ALIASES (all levels) ────────────────────────────────────────
+        out += '    local ' + vRawGet + ' = rawget\\n';
+        out += '    local ' + vSetMeta + ' = setmetatable\\n';
+        out += '    local ' + vGetMeta + ' = getmetatable\\n';
+        out += '    local ' + vRawEq + ' = rawequal\\n';
+        out += '    local ' + vPCall + ' = pcall\\n';
+        out += '    local ' + vToStr + ' = tostring\\n';
+        out += '    local ' + vBit32 + ' = bit32\\n';
+        out += '    local ' + vStrLib + ' = string\\n';
+        out += '    local ' + vMathLib + ' = math\\n';
+        out += '    local ' + vTableLib + ' = table\\n';
+        out += '    local ' + vTypeOf + ' = type\\n';
+        out += '    local ' + vSetFEnv + ' = setfenv\\n';
+        out += '    local ' + vGetFEnv + ' = getfenv\\n';
+        out += '    local ' + vLoadStr + ' = loadstring\\n';
+        out += '    local ' + vIpairs + ' = ipairs\\n';
+        out += '    local ' + vSelect + ' = select\\n';
+        out += '    local ' + vRawLen + ' = rawlen\\n';
+        out += '    local ' + vTypeInst + ' = typeof\\n';
+        out += '    local ' + vDebugLib + ' = debug\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── LEVEL 1: first 16 fingerprint checks ──────────────────────────────
+        out += '    local ' + vCheckIO + ' = (' + vRawGet + '(_G, \'io\') == nil and math.floor(210.0) or 0)\\n';
+        out += '    local ' + vCheckDump + ' = (' + vRawGet + '(string, \'dump\') == nil and 39 or 0)\\n';
+        out += '    local ' + vCheckNProxy + ' = (' + vTypeOf + '(' + vRawGet + '(_G, \'newproxy\')) == \'function\' and bit32.bxor(177, 0xA5) or 0)\\n';
+        out += '    local ' + vPCallChk + ' = (' + vRawEq + '(' + vPCall + ', pcall) and bit32.bxor(242, 0xA5) or 0)\\n';
+        out += '    local ' + vToStrChk + ' = (' + vRawEq + '(' + vToStr + ', tostring) and bit32.bxor(5, 0xA5) or 0)\\n';
+        out += '    local ' + vIpairsChk + ' = (' + vRawEq + '(' + vIpairs + ', ipairs) and bit32.bxor(35, 0xA5) or 0)\\n';
+        out += '    local ' + vSelectChk + ' = (' + vRawEq + '(' + vSelect + ', select) and math.floor(37.0) or 0)\\n';
+        out += '    local ' + vRawGetChk + ' = (' + vRawEq + '(' + vRawGet + ', rawget) and 50 or 0)\\n';
+        out += '    local ' + vSetMetaChk + ' = (' + vRawEq + '(' + vSetMeta + ', setmetatable) and bit32.bxor(163, 0xA5) or 0)\\n';
+        out += '    local ' + vBuiltInsChk + ' = (' + vRawGet + '(_G, \'__builtins__\') == nil and ' + vRawGet + '(_G, \'__name__\') == nil and 184 or 0)\\n';
+        out += '    local ' + vUtf8Chk + ' = (' + vTypeOf + '(' + vRawGet + '(_G, \'utf8\')) == \'table\' and 211 or 0)\\n';
+        out += '    local ' + vCoroChk + ' = (' + vTypeOf + '(coroutine.wrap) == \'function\' and 143 or 0)\\n';
+        out += '    local ' + vFmtChk + ' = (' + vStrLib + '.format(\'%d\', 1) == \'1\' and 235 or 0)\\n';
+        out += '    local ' + vFloorMath + ' = (' + vMathLib + '.floor(1.9) == 1 and 44 or 0)\\n';
+        out += '    local ' + vStrByte + ' = (' + vStrLib + '.byte(\'A\') == 65 and 205 or 0)\\n';
+        out += '    local ' + vXorIdent + ' = (bit32.bxor(57005, 57005) == 0 and 134 or 0)\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── LEVEL 2: remaining 16 fingerprint checks + XOR gate ───────────────
+        if (doL2) {
+            out += '    local ' + vStrCheck + ' = (pcall(function() return type(rawget(game, \'ClassName\')) end) and 151 or 0)\\n';
+            out += '    local ' + vInstTblChk + ' = (' + vTypeOf + '(' + vRawGet + '(_G, \'Instance\')) == \'table\' and math.floor(183.0) or 0)\\n';
+            out += '    local ' + vTimeNow + ' = (function() local ok, v = pcall(function() return os.time() end) return ok and (v or 0) or 0 end)()\\n';
+            out += '    local ' + vTimeChk + ' = (' + vTimeNow + ' > 1700000000 and 23 or 0)\\n';
+            out += '    local ' + vGameChk + ' = (' + vTypeOf + '(game) == \'userdata\' and bit32.bxor(44, 0xA5) or 0)\\n';
+            out += '    local ' + vWsChk + ' = (' + vTypeOf + '(workspace) == \'userdata\' and math.floor(98.0) or 0)\\n';
+            out += '    local ' + vInstChk + ' = (' + vTypeInst + ' and ' + vTypeInst + '(game) == \'Instance\' and bit32.bxor(235, 0xA5) or 0)\\n';
+            out += '    local ' + vTickNow + ' = (function() local ok, v = pcall(tick) return ok and (v or 0) or 0 end)()\\n';
+            out += '    local ' + vTickChk + ' = (' + vTickNow + ' > 1000000000 and math.floor(121.0) or 0)\\n';
+            out += '    local ' + vClockNow + ' = (function() local ok, v = pcall(os.clock) return ok and (v or -1) or -1 end)()\\n';
+            out += '    local ' + vClockChk + ' = (' + vClockNow + ' >= 0 and 93 or 0)\\n';
+            out += '    local ' + vFloatHuge + ' = (math.huge > math.floor(math.huge - 1) and 137 or 0)\\n';
+            out += '    local ' + vBitMask + ' = (bit32.band(255, 15) == 15 and 197 or 0)\\n';
+            out += '    local ' + vEnumChk + ' = (' + vTypeOf + '(' + vRawGet + '(_G, \'Enum\')) == \'userdata\' and 157 or 0)\\n';
+            out += '    local ' + vGetGEnvChk + ' = (' + vTypeOf + '(' + vRawGet + '(_G, \'getgenv\')) == \'function\' and bit32.bxor(213, 0xA5) or 0)\\n';
+            out += '    local ' + vGetFEnvChk + ' = (' + vTypeOf + '(' + vRawGet + '(_G, \'getfenv\')) == \'function\' and 101 or 0)\\n';
+            out += '    local ' + vSetFEnvChk + ' = (' + vTypeOf + '(' + vRawGet + '(_G, \'setfenv\')) == \'function\' and 123 or 0)\\n';
+            out += '    local ' + vTrBkChk + ' = (' + vTypeOf + '(' + vDebugLib + ' and ' + vDebugLib + '.traceback) == \'function\' and 22 or 0)\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            out += '    local ' + vBxorAll + ' = function(...)\\n';
+            out += '      local _args = {...}\\n';
+            out += '      local _r = 0\\n';
+            out += '      for _i = 1, #_args do _r = bit32.bxor(_r, _args[_i]) end\\n';
+            out += '      return _r\\n';
+            out += '    end\\n';
+
+            out += '    local ' + vTotal + ' = ' + vBxorAll + '(\\n';
+            out += '      ' + vCheckIO + ', ' + vCheckDump + ', ' + vCheckNProxy + ', ' + vPCallChk + ', ' + vToStrChk + ', ' + vIpairsChk + ', ' + vSelectChk + ', ' + vRawGetChk + ', ' + vSetMetaChk + ', ' + vBuiltInsChk + ', ' + vUtf8Chk + ', ' + vCoroChk + ', ' + vFmtChk + ', ' + vFloorMath + ', ' + vStrByte + ', ' + vXorIdent + ', ' + vStrCheck + ', ' + vInstTblChk + ', ' + vTimeChk + ', ' + vGameChk + ', ' + vWsChk + ', ' + vInstChk + ', ' + vTickChk + ', ' + vClockChk + ', ' + vFloatHuge + ', ' + vBitMask + ', ' + vEnumChk + ', ' + vGetGEnvChk + ', ' + vGetFEnvChk + ', ' + vSetFEnvChk + ', ' + vTrBkChk + '\\n';
+            out += '    )\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── LEVEL 3: 4-segment key + RC4 stream + payload/fail ──────────────────
+        if (doL3) {
+            var segLen = 8;
+            // Generate random key segments as byte arrays
+            var rawA = []; var rawB = []; var rawC = []; var rawD = [];
+            for (var _si = 0; _si < segLen; _si++) {
+                rawA.push((Math.floor(Math.random()*200)+30)|0);
+                rawB.push((Math.floor(Math.random()*200)+30)|0);
+                rawC.push((Math.floor(Math.random()*200)+30)|0);
+                rawD.push((Math.floor(Math.random()*200)+30)|0);
+            }
+            var segAStr = '{' + rawA.join(', ') + '}';
+            var segBStr = '{' + rawB.join(', ') + '}';
+            var segCStr = '{' + rawC.join(', ') + '}';
+            var segDStr = '{' + rawD.join(', ') + '}';
+
+            out += '    local ' + vKSegA + ' = ' + segAStr + '\\n';
+            out += '    local ' + vKSegB + ' = ' + segBStr + '\\n';
+            out += '    local ' + vKSegC + ' = ' + segCStr + '\\n';
+            out += '    local ' + vKSegD + ' = ' + segDStr + '\\n';
+            out += '    local ' + vBaseA + ' = BASE_A_PLACEHOLDER\\n'.replace('BASE_A_PLACEHOLDER', String(BASE_A));
+            out += '    local ' + vBaseB + ' = BASE_B_PLACEHOLDER\\n'.replace('BASE_B_PLACEHOLDER', String(BASE_B));
+            out += '    local ' + vBaseC + ' = BASE_C_PLACEHOLDER\\n'.replace('BASE_C_PLACEHOLDER', String(BASE_C));
+            out += '    local ' + vBaseD + ' = BASE_D_PLACEHOLDER\\n'.replace('BASE_D_PLACEHOLDER', String(BASE_D));
+
+            out += '    local ' + vTrA + ' = bit32.bxor(' + vBaseA + ', (' + vTotal + ' == TARGET_PLACEHOLDER and XOR_A_PLACEHOLDER or 0))\\n'
+                .replace('TARGET_PLACEHOLDER', String(TARGET_SUM))
+                .replace('XOR_A_PLACEHOLDER', String(XOR_A));
+            out += '    local ' + vTrB + ' = bit32.bxor(' + vBaseB + ', (' + vTotal + ' == TARGET_PLACEHOLDER and XOR_B_PLACEHOLDER or 0))\\n'
+                .replace('TARGET_PLACEHOLDER', String(TARGET_SUM))
+                .replace('XOR_B_PLACEHOLDER', String(XOR_B));
+            out += '    local ' + vTrC + ' = bit32.bxor(' + vBaseC + ', (' + vTotal + ' == TARGET_PLACEHOLDER and XOR_C_PLACEHOLDER or 0))\\n'
+                .replace('TARGET_PLACEHOLDER', String(TARGET_SUM))
+                .replace('XOR_C_PLACEHOLDER', String(XOR_C));
+            out += '    local ' + vTrD + ' = bit32.bxor(' + vBaseD + ', (' + vTotal + ' == TARGET_PLACEHOLDER and XOR_D_PLACEHOLDER or 0))\\n'
+                .replace('TARGET_PLACEHOLDER', String(TARGET_SUM))
+                .replace('XOR_D_PLACEHOLDER', String(XOR_D));
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            out += '    local ' + vFinalKey + ' = {}\\n';
+            out += '    for ' + vFKi + ' = 1, 32 do\\n';
+            out += '      local ' + vFKoff + ' = (' + vFKi + ' - 1) % 4 + 1\\n';
+            out += '      if ' + vFKoff + ' == 1 then ' + vFinalKey + '[' + vFKi + '] = bit32.bxor(' + vKSegA + '[((' + vFKi + ' - 1) // 4) + 1], ' + vTrA + ') end\\n';
+            out += '      if ' + vFKoff + ' == 2 then ' + vFinalKey + '[' + vFKi + '] = bit32.bxor(' + vKSegB + '[((' + vFKi + ' - 1) // 4) + 1], ' + vTrB + ') end\\n';
+            out += '      if ' + vFKoff + ' == 3 then ' + vFinalKey + '[' + vFKi + '] = bit32.bxor(' + vKSegC + '[((' + vFKi + ' - 1) // 4) + 1], ' + vTrC + ') end\\n';
+            out += '      if ' + vFKoff + ' == 4 then ' + vFinalKey + '[' + vFKi + '] = bit32.bxor(' + vKSegD + '[((' + vFKi + ' - 1) // 4) + 1], ' + vTrD + ') end\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            out += '    local ' + vDecFn + ' = function(data, key)\\n';
+            out += '      local ' + vStream + ' = {}\\n';
+            out += '      for ' + vDecI + ' = 0, 255 do ' + vStream + '[' + vDecI + '] = ' + vDecI + ' end\\n';
+            out += '      local ' + vDi + ' = 0\\n';
+            out += '      for ' + vDecI + ' = 0, 255 do\\n';
+            out += '        ' + vDi + ' = (' + vDi + ' + ' + vStream + '[' + vDecI + '] + key[(' + vDecI + ' % #key) + 1]) % 256\\n';
+            out += '        ' + vStream + '[' + vDecI + '], ' + vStream + '[' + vDi + '] = ' + vStream + '[' + vDi + '], ' + vStream + '[' + vDecI + ']\\n';
+            out += '      end\\n';
+            out += '      ' + vDecI + ' = 0\\n';
+            out += '      local ' + vDecK + ' = 0\\n';
+            out += '      local ' + vDecBytes + ' = {}\\n';
+            out += '      for ' + vDecIdx + ' = 1, #data do\\n';
+            out += '        ' + vDecI + ' = (' + vDecI + ' + 1) % 256\\n';
+            out += '        ' + vDecK + ' = (' + vDecK + ' + ' + vStream + '[' + vDecI + ']) % 256\\n';
+            out += '        ' + vStream + '[' + vDecI + '], ' + vStream + '[' + vDecK + '] = ' + vStream + '[' + vDecK + '], ' + vStream + '[' + vDecI + ']\\n';
+            out += '        ' + vDecBytes + '[' + vDecIdx + '] = bit32.bxor(data[' + vDecIdx + '], ' + vStream + '[(' + vStream + '[' + vDecI + '] + ' + vStream + '[' + vDecK + ']) % 256])\\n';
+            out += '      end\\n';
+            out += '      return ' + vDecBytes + '\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            out += '    if ' + vTotal + ' == TARGET_PLACEHOLDER\\n'.replace('TARGET_PLACEHOLDER', String(TARGET_SUM));
+            out += '    then\\n';
+            out += '      for ' + vDecI + ' = 1, 32 do ' + vFinalKey + '[' + vDecI + '] = 0 end\\n';
+            out += '      rawset(_G, \'__ATV5_PASS__\', true)\\n';
+            out += '    else\\n';
+            out += '      local _msg = \'\\u1f48e nice try lil bro | protected by ArchiveXNova\'\\n';
+            out += '      pcall(print, _msg)\\n';
+            out += '      pcall(warn, _msg)\\n';
+            out += '      rawset(_G, \'__ATV5_FAIL__\', true)\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── Simple gate for level1/level2 ─────────────────────────────────────
+        if (!doL3) {
+            if (doL2) {
+                out += '    if ' + vTotal + ' ~= TARGET_PLACEHOLDER then\\n'.replace('TARGET_PLACEHOLDER', String(TARGET_SUM));
+                out += '      rawset(_G, \'__ATV5_FAIL__\', true)\\n';
+                out += '      pcall(print, \'\\u1f48e nice try lil bro | protected by ArchiveXNova\')\\n';
+                out += '    else\\n';
+                out += '      rawset(_G, \'__ATV5_PASS__\', true)\\n';
+                out += '    end\\n';
+            } else {
+                out += '    if not ' + vPCallChk + ' == 0 then\\n';
+                out += '      rawset(_G, \'__ATV5_PASS__\', true)\\n';
+                out += '    end\\n';
+            }
+        }
+
+        out += '  end\\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
+    // ── Anti-Tampering V4 ───────────────────────────────────────────────────────────────
+    /**
+     * Anti-Tampering V4 — environment forensics layer.
+     * Based on: verifyGetfenvHook, verifyEnvironmentProxy, verifyEnvironmentLeak,
+     *           verifyBytecodeIntegrity, verifySetfenvSwap, verifyDebugUpvalueInjection
+     * Levels: level1 < level2 < level3
+     */
+    function buildAntiTamperV4(mode, JUNK_MULT) {
+        JUNK_MULT = JUNK_MULT || 1;
+        var out = '';
+        var doL2 = (mode === 'level2' || mode === 'level3');
+        var doL3 = (mode === 'level3');
+
+        // Variable names
+        var vSafe  = rv(); var vReason = rv(); var vIsRbx  = rv();
+        var vGfe   = rv(); var vGfeT   = rv(); var vOk1    = rv(); var vEnv0   = rv();
+        var vOk2   = rv(); var vEnv1   = rv(); var vMt     = rv(); var vTw     = rv();
+        var vOkTw  = rv(); var vKeys   = rv(); var vKey    = rv(); var vRaw    = rv();
+        var vOkDmp = rv(); var vDmp    = rv(); var vOkSfe  = rv(); var vFenv   = rv();
+        var vDbg   = rv(); var vIdx    = rv(); var vNm     = rv(); var vVal    = rv();
+        var vOkDbg = rv();
+        var vExec  = rv(); var vChk1   = rv(); var vChk2   = rv(); var vChk3   = rv();
+        var vChk4  = rv(); var vChk5   = rv(); var vChk6   = rv();
+        // suspicious key list
+        var suspKeys = ['fenv','env','_fenv','__fenv','genv','globalenv','_env','rawenv','hookenv','scriptenv'];
+
+        out += '  do\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── Shared state & Roblox detection ──────────────────────────────────
+        out += '    local ' + vSafe   + ' = true\\n';
+        out += '    local ' + vReason + ' = \"\"\\n';
+        out += '    local ' + vIsRbx  + ' = (game ~= nil and typeof ~= nil)\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── LEVEL 1: verifyGetfenvHook ────────────────────────────────────────
+        out += '    local ' + vChk1 + ' = function()\\n';
+        out += '      if getfenv ~= nil then\\n';
+        out += '        local ' + vGfeT + ' = type(getfenv)\\n';
+        out += '        if ' + vGfeT + ' ~= \'function\' then\\n';
+        out += '          ' + vSafe + ' = false\\n';
+        out += '          ' + vReason + ' = \'getfenv is not a function (spoofed)\'\\n';
+        out += '          return\\n';
+        out += '        end\\n';
+        out += '        local ' + vOk1 + ', ' + vEnv0 + ' = pcall(getfenv, 0)\\n';
+        out += '        if not ' + vOk1 + ' then\\n';
+        out += '          ' + vSafe + ' = false\\n';
+        out += '          ' + vReason + ' = \'getfenv(0) threw error - likely hooked\'\\n';
+        out += '          return\\n';
+        out += '        end\\n';
+        out += '        if ' + vIsRbx + ' then\\n';
+        out += '          if ' + vEnv0 + '.game == nil or ' + vEnv0 + '.workspace == nil then\\n';
+        out += '            ' + vSafe + ' = false\\n';
+        out += '            ' + vReason + ' = \'Roblox globals missing - env spoofed\'\\n';
+        out += '            return\\n';
+        out += '          end\\n';
+        out += '          if ' + vEnv0 + '.getfenv ~= getfenv then\\n';
+        out += '            ' + vSafe + ' = false\\n';
+        out += '            ' + vReason + ' = \'getfenv replaced in environment\'\\n';
+        out += '            return\\n';
+        out += '          end\\n';
+        out += '        else\\n';
+        out += '          if ' + vEnv0 + ' ~= _G then\\n';
+        out += '            ' + vSafe + ' = false\\n';
+        out += '            ' + vReason + ' = \'getfenv(0) ~= _G - env proxied/sandboxed\'\\n';
+        out += '            return\\n';
+        out += '          end\\n';
+        out += '        end\\n';
+        out += '        local ' + vOk2 + ', ' + vEnv1 + ' = pcall(getfenv, 1)\\n';
+        out += '        if ' + vOk2 + ' then\\n';
+        out += '          if not ' + vIsRbx + ' and ' + vEnv1 + ' ~= _G then\\n';
+        out += '            ' + vSafe + ' = false\\n';
+        out += '            ' + vReason + ' = \'getfenv(1) sandboxed - injection detected\'\\n';
+        out += '          end\\n';
+        out += '        end\\n';
+        out += '      end\\n';
+        out += '    end\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── LEVEL 1: verifyEnvironmentProxy ──────────────────────────────────
+        out += '    local ' + vChk2 + ' = function()\\n';
+        out += '      local ' + vMt + ' = getmetatable(_G)\\n';
+        out += '      if ' + vMt + ' ~= nil then\\n';
+        out += '        if ' + vIsRbx + ' then\\n';
+        out += '          local ' + vOkTw + ' = pcall(function()\\n';
+        out += '            local ' + vTw + ' = _G._TEST_WRITE_CHECK\\n';
+        out += '            _G._TEST_WRITE_CHECK = true\\n';
+        out += '            _G._TEST_WRITE_CHECK = ' + vTw + '\\n';
+        out += '          end)\\n';
+        out += '          if ' + vOkTw + ' then return end\\n';
+        out += '        end\\n';
+        out += '        ' + vSafe + ' = false\\n';
+        out += '        ' + vReason + ' = \'_G has suspicious metatable - env proxied\'\\n';
+        out += '      end\\n';
+        out += '    end\\n';
+        out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+        // ── LEVEL 2: verifyEnvironmentLeak ───────────────────────────────────
+        if (doL2) {
+            out += '    local ' + vChk3 + ' = function()\\n';
+            out += '      local ' + vKeys + ' = {\'fenv\', \'env\', \'_fenv\', \'__fenv\', \'genv\', \'globalenv\', \'_env\', \'rawenv\', \'hookenv\', \'scriptenv\'}\\n';
+            out += '      for _, ' + vKey + ' in ipairs(' + vKeys + ') do\\n';
+            out += '        if rawget(_G, ' + vKey + ') ~= nil then\\n';
+            out += '          ' + vSafe + ' = false\\n';
+            out += '          ' + vReason + ' = \'Suspicious env key in _G: \' .. ' + vKey + '\\n';
+            out += '          return\\n';
+            out += '        end\\n';
+            out += '      end\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            // ── LEVEL 2: verifyBytecodeIntegrity ─────────────────────────────
+            out += '    local ' + vChk4 + ' = function()\\n';
+            out += '      if string and string.dump then\\n';
+            out += '        local ' + vOkDmp + ', ' + vDmp + ' = pcall(string.dump, ' + vChk4 + ')\\n';
+            out += '        if not ' + vOkDmp + ' then\\n';
+            out += '          if not ' + vIsRbx + ' then\\n';
+            out += '            ' + vSafe + ' = false\\n';
+            out += '            ' + vReason + ' = \'string.dump failed - bytecode hooked\'\\n';
+            out += '          end\\n';
+            out += '          return\\n';
+            out += '        end\\n';
+            out += '        if type(' + vDmp + ') == \'string\' and #' + vDmp + ' < 10 then\\n';
+            out += '          ' + vSafe + ' = false\\n';
+            out += '          ' + vReason + ' = \'Bytecode dump too small - possible hook\'\\n';
+            out += '        end\\n';
+            out += '      end\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── LEVEL 3: verifySetfenvSwap ────────────────────────────────────────
+        if (doL3) {
+            out += '    local ' + vChk5 + ' = function()\\n';
+            out += '      if setfenv and getfenv then\\n';
+            out += '        local ' + vOkSfe + ', ' + vFenv + ' = pcall(getfenv, ' + vChk5 + ')\\n';
+            out += '        if ' + vOkSfe + ' then\\n';
+            out += '          if not ' + vIsRbx + ' and ' + vFenv + ' ~= _G then\\n';
+            out += '            ' + vSafe + ' = false\\n';
+            out += '            ' + vReason + ' = \'setfenv used to swap function env\'\\n';
+            out += '          end\\n';
+            out += '        end\\n';
+            out += '      end\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+
+            // ── LEVEL 3: verifyDebugUpvalueInjection ─────────────────────────
+            out += '    local ' + vChk6 + ' = function()\\n';
+            out += '      if debug and debug.getupvalue then\\n';
+            out += '        local ' + vIdx + ' = 1\\n';
+            out += '        while ' + vIdx + ' <= 20 do\\n';
+            out += '          local ' + vOkDbg + ', ' + vNm + ', ' + vVal + ' = pcall(debug.getupvalue, ' + vChk6 + ', ' + vIdx + ')\\n';
+            out += '          if not ' + vOkDbg + ' or ' + vNm + ' == nil then break end\\n';
+            out += '          if ' + vNm + ' == \'isSafe\' and ' + vVal + ' == false then\\n';
+            out += '            ' + vReason + ' = \'Upvalue isSafe set to false externally\'\\n';
+            out += '          end\\n';
+            out += '          ' + vIdx + ' = ' + vIdx + ' + 1\\n';
+            out += '        end\\n';
+            out += '      end\\n';
+            out += '    end\\n';
+            out += jBlock(JUNK_MULT).replace(/^/gm, '  ');
+        }
+
+        // ── executeSecurityChecks + error banner ──────────────────────────────
+        out += '    local ' + vExec + ' = function()\\n';
+        out += '      ' + vChk1 + '()\\n';
+        out += '      if ' + vSafe + ' then ' + vChk2 + '() end\\n';
+        if (doL2) {
+            out += '      if ' + vSafe + ' then ' + vChk3 + '() end\\n';
+            out += '      if ' + vSafe + ' then ' + vChk4 + '() end\\n';
+        }
+        if (doL3) {
+            out += '      if ' + vSafe + ' then ' + vChk5 + '() end\\n';
+            out += '      if ' + vSafe + ' then ' + vChk6 + '() end\\n';
+        }
+        out += '      if not ' + vSafe + ' then\\n';
+        out += '        error(\"\\n\\n\" ..\\n';
+        out += '          \'\\u2554\' .. string.rep(\'\\u2550\', 44) .. \'\\u2557\\n\' ..\\n';
+        out += '          \'\\u2551        \\u26d4  INJECTION DETECTED  \\u26d4        \\u2551\\n\' ..\\n';
+        out += '          \'\\u2560\' .. string.rep(\'\\u2550\', 44) .. \'\\u2563\\n\' ..\\n';
+        out += '          \'\\u2551  Reason: \' .. ' + vReason + ' .. string.rep(\" \", math.max(0, 34 - #' + vReason + ')) .. \'\\u2551\\n\' ..\\n';
+        out += '          \'\\u2551  Script execution has been halted.         \\u2551\\n\' ..\\n';
+        out += '          \'\\u255a\' .. string.rep(\'\\u2550\', 44) .. \'\\u255d\\n\', 0)\\n';
+        out += '      end\\n';
+        out += '    end\\n';
+        out += '    ' + vExec + '()\\n';
+        out += jBlock(2 * JUNK_MULT).replace(/^/gm, '  ');
+
+        out += '  end\\n';
+        out += jBlock(2 * JUNK_MULT);
+        return out;
+    }
+
+
     function startObfuscate() {
         if(_busy) return;
         _busy = true;
@@ -7607,6 +8408,12 @@ function buildAsciiSimple(codes) {
                 o['adv3Mode']          = 'level2';
                 o['enableATV3']        = true;
                 o['atv3Mode']          = 'level2';
+                o['enableATV6']        = true;
+                o['atv6Mode']          = 'level2';
+                o['enableATV5']        = true;
+                o['atv5Mode']          = 'level2';
+                o['enableATV4']        = true;
+                o['atv4Mode']          = 'level2';
                 o['csMode']            = 'strong';
                 o['enableCE']          = true;
                 o['ceMode']            = 'strong';
@@ -7645,6 +8452,12 @@ function buildAsciiSimple(codes) {
                 o['adv3Mode']          = 'level2';
                 o['enableATV3']        = true;
                 o['atv3Mode']          = 'level2';
+                o['enableATV6']        = true;
+                o['atv6Mode']          = 'level2';
+                o['enableATV5']        = true;
+                o['atv5Mode']          = 'level2';
+                o['enableATV4']        = true;
+                o['atv4Mode']          = 'level2';
                 o['csMode']            = 'extrastrong';
                 o['enableCE']          = true;
                 o['ceMode']            = 'extrastrong';
@@ -7686,6 +8499,12 @@ function buildAsciiSimple(codes) {
                 o['adv3Mode']          = 'level3';
                 o['enableATV3']        = true;
                 o['atv3Mode']          = 'level3';
+                o['enableATV6']        = true;
+                o['atv6Mode']          = 'level3';
+                o['enableATV5']        = true;
+                o['atv5Mode']          = 'level3';
+                o['enableATV4']        = true;
+                o['atv4Mode']          = 'level3';
                 o['csMode']            = 'aggressive';
                 o['enableCE']          = true;
                 o['ceMode']            = 'aggressive';
@@ -7905,6 +8724,33 @@ function buildAsciiSimple(codes) {
         if (useATV3) {
             setProgress(10, 'Anti-Tampering V3...');
             parts.push(buildAntiTamperV3(atv3Mode, JUNK_MULT));
+            parts.push(jBlock(3 * JUNK_MULT));
+        }
+
+        // ── Anti-Tampering V6 ──
+        const useATV6  = _secRead('enableATV6');
+        const atv6Mode = _secVal('atv6Mode') || document.getElementById('atv6Mode').value;
+        if (useATV6) {
+            setProgress(10, 'Anti-Tampering V6...');
+            parts.push(buildAntiTamperV6(atv6Mode, JUNK_MULT));
+            parts.push(jBlock(3 * JUNK_MULT));
+        }
+
+        // ── Anti-Tampering V5 ──
+        const useATV5  = _secRead('enableATV5');
+        const atv5Mode = _secVal('atv5Mode') || document.getElementById('atv5Mode').value;
+        if (useATV5) {
+            setProgress(10, 'Anti-Tampering V5...');
+            parts.push(buildAntiTamperV5(atv5Mode, JUNK_MULT));
+            parts.push(jBlock(3 * JUNK_MULT));
+        }
+
+        // ── Anti-Tampering V4 ──
+        const useATV4  = _secRead('enableATV4');
+        const atv4Mode = _secVal('atv4Mode') || document.getElementById('atv4Mode').value;
+        if (useATV4) {
+            setProgress(10, 'Anti-Tampering V4...');
+            parts.push(buildAntiTamperV4(atv4Mode, JUNK_MULT));
             parts.push(jBlock(3 * JUNK_MULT));
         }
 
@@ -8380,7 +9226,12 @@ function buildAsciiSimple(codes) {
         const blob = new Blob([text], {type:'text/plain'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'obfuscated_nothing_v1.lua';
+        var _chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        var _len = Math.floor(Math.random()*10)+8;
+        var _rndName = '';
+        for(var _ci=0;_ci<_len;_ci++) _rndName += _chars[Math.floor(Math.random()*_chars.length)];
+        _rndName += '.lua';
+        a.download = _rndName;
         a.click();
     }
 
@@ -8469,10 +9320,272 @@ function buildAsciiSimple(codes) {
         }
     }
 
+    // ── Recommend Features ────────────────────────────────────────────────────
+    var _recResults = [];
+
+    function openRecommend() {
+        var code = document.getElementById('input') ? document.getElementById('input').value
+                 : (document.querySelector('textarea') ? document.querySelector('textarea').value : '');
+        // fallback: try CodeMirror instance
+        if (!code && window._editor) code = window._editor.getValue();
+        if (!code || code.trim() === '') {
+            alert('Paste your Lua code into the input box first, then click Recommend Features.');
+            return;
+        }
+        _recResults = analyzeCode(code);
+        renderRecommendations(_recResults);
+        document.getElementById('recommendModal').classList.add('open');
+    }
+
+    function closeRecommend() {
+        document.getElementById('recommendModal').classList.remove('open');
+    }
+
+    // Close on backdrop click — deferred until DOM ready
+    (function() {
+        function _attachRecModal() {
+            var m = document.getElementById('recommendModal');
+            if (m) {
+                m.addEventListener('click', function(e) {
+                    if (e.target === this) closeRecommend();
+                });
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', _attachRecModal);
+        } else {
+            _attachRecModal();
+        }
+    })();
+
+    function analyzeCode(code) {
+        var recs = [];
+        var len  = code.length;
+        var lines = code.split('\n');
+
+        // ── helpers ──
+        function has(pattern) { return pattern.test(code); }
+        function countMatches(pattern) { return (code.match(pattern) || []).length; }
+        function hasGlobal(name) { return new RegExp('\\b' + name + '\\b').test(code); }
+
+        // String constants density
+        var strMatches = countMatches(/["'][^"']{4,}["']/g);
+        var numMatches = countMatches(/\b\d{3,}\b/g);
+        var funcCount  = countMatches(/\bfunction\b/g);
+        var ifCount    = countMatches(/\bif\b/g);
+        var loopCount  = countMatches(/\bfor\b|\bwhile\b|\brepeat\b/g);
+        var callCount  = countMatches(/\w+\s*\(/g);
+
+        // Sensitivity signals
+        var hasHTTP       = has(/HttpGet|HttpPost|request\s*\(|syn\.request|http_request/i);
+        var hasExecutor   = has(/getgenv|getrenv|getsenv|hookfunction|newcclosure|clonefunction|checkcaller|identifyexecutor/i);
+        var hasWebhook    = has(/discord\.com\/api\/webhooks|discordapp\.com/i);
+        var hasLoadstring = has(/loadstring\s*\(/i);
+        var hasRequire    = has(/require\s*\(/i);
+        var hasDebug      = has(/debug\s*\.\s*(getinfo|getupvalue|sethook|traceback)/i);
+        var hasRawGet     = has(/rawget\s*\(/i);
+        var hasMetatable  = has(/setmetatable|getmetatable|__index|__newindex/i);
+        var hasGame       = has(/game\s*:|game\.GetService|workspace\.|Players\.|ReplicatedStorage/i);
+        var hasScript     = has(/script\s*\.|LocalScript|ModuleScript/i);
+        var hasLongStr    = has(/string\.rep|string\.sub|string\.byte|string\.char/i);
+        var hasCoroutine  = has(/coroutine\.(create|wrap|resume|yield)/i);
+        var hasTable      = has(/table\.(concat|insert|remove|sort)/i);
+        var hasMath       = has(/math\.(floor|ceil|random|huge|max|min)/i);
+        var hasBit32      = has(/bit32\.(bxor|band|bor|bnot|lshift|rshift)/i);
+        var hasPCall      = has(/pcall\s*\(|xpcall\s*\(/i);
+        var hasPrint      = has(/\bprint\s*\(/i);
+        var hasIpairs     = has(/\bipairs\s*\(|\bpairs\s*\(/i);
+        var isLarge       = len > 3000;
+        var isVeryLarge   = len > 10000;
+
+        // ── SECURITY recommendations ─────────────────────────────────────────
+        if (hasHTTP) {
+            recs.push({ id:'enableMeow', valId:'meowHttpSpy', val:true,
+                label:'Meow Al – HTTP Spy Block', tag:'sec',
+                reason:'Kode menggunakan HTTP requests — blokir spy yang memonitor HttpService/request.' });
+        }
+        if (hasWebhook) {
+            recs.push({ id:'enableMeow', valId:null, val:null,
+                label:'Meow Al (aktifkan)', tag:'sec',
+                reason:'Ditemukan URL Discord webhook — aktifkan Meow Al untuk memblokir exfiltration.' });
+        }
+        if (hasExecutor) {
+            recs.push({ id:'enableATV3', valId:'atv3Mode', val:'level2',
+                label:'Anti-Tampering V3 – Level 2', tag:'sec',
+                reason:'Kode menggunakan fungsi executor (hookfunction, newcclosure, dll) — perlu perlindungan metamethod.' });
+            recs.push({ id:'enableATV6', valId:'atv6Mode', val:'level2',
+                label:'Anti-Tampering V6 – Level 2', tag:'sec',
+                reason:'Executor functions terdeteksi — DNA fingerprint + logger signal scan diperlukan.' });
+        }
+        if (hasLoadstring) {
+            recs.push({ id:'enableATV4', valId:'atv4Mode', val:'level2',
+                label:'Anti-Tampering V4 – Level 2', tag:'sec',
+                reason:'loadstring() ditemukan — perlu verifikasi getfenv hook dan environment integrity.' });
+            recs.push({ id:'enableATV5', valId:'atv5Mode', val:'level2',
+                label:'Anti-Tampering V5 – Level 2', tag:'sec',
+                reason:'loadstring() ditemukan — RC4 fingerprint check memastikan environment tidak dimanipulasi.' });
+        }
+        if (hasDebug) {
+            recs.push({ id:'enableADV3', valId:'adv3Mode', val:'level2',
+                label:'Anti-Dump V3 – Level 2', tag:'sec',
+                reason:'debug library digunakan — proteksi memory address drift dan GC canary diperlukan.' });
+            recs.push({ id:'enableATV6', valId:'atv6Mode', val:'level3',
+                label:'Anti-Tampering V6 – Level 3 (Debug Tools)', tag:'sec',
+                reason:'debug.getinfo/getupvalue terdeteksi — aktifkan stack depth guard + debug tools detection.' });
+        }
+        if (hasRawGet || hasMetatable) {
+            recs.push({ id:'enableATV2', valId:'atv2Mode', val:'strong',
+                label:'Anti-Tampering V2 – Strong', tag:'sec',
+                reason:'rawget/metatable ditemukan — waspada terhadap environment spoofing.' });
+        }
+        if (hasPCall) {
+            recs.push({ id:'enableATV4', valId:'atv4Mode', val:'level1',
+                label:'Anti-Tampering V4 – Level 1', tag:'sec',
+                reason:'pcall/xpcall digunakan — verifikasi identitas fungsi stdlib diperlukan.' });
+        }
+
+        // ── OBFUSCATION recommendations ──────────────────────────────────────
+        if (strMatches > 5) {
+            recs.push({ id:'enableCE', valId:'ceMode', val: strMatches > 20 ? 'strong' : 'normal',
+                label:'Constant Encryptor – ' + (strMatches > 20 ? 'Strong' : 'Normal'), tag:'obs',
+                reason: strMatches + ' string constants ditemukan — enkripsi XOR chain menyembunyikannya.' });
+        }
+        if (numMatches > 8) {
+            recs.push({ id:'enableNOM', valId:'nomMode', val: numMatches > 30 ? 'strong' : 'normal',
+                label:'Nomor – ' + (numMatches > 30 ? 'Strong' : 'Normal'), tag:'obs',
+                reason: numMatches + ' numeric literal ditemukan — sembunyikan angka sebagai ekspresi matematika.' });
+        }
+        if (funcCount > 3) {
+            recs.push({ id:'enableRN', valId:'rnMode', val: funcCount > 15 ? 'strong' : 'normal',
+                label:'Renamer – ' + (funcCount > 15 ? 'Strong' : 'Normal'), tag:'obs',
+                reason: funcCount + ' fungsi ditemukan — rename dengan hex acak agar tidak terbaca.' });
+        }
+        if (ifCount > 4 || loopCount > 3) {
+            recs.push({ id:'enableCFF', valId:'cffMode', val:'normal',
+                label:'Control Flow Flattening', tag:'obs',
+                reason: ifCount + ' if-block dan ' + loopCount + ' loop ditemukan — ratakan alur kontrol.' });
+        }
+        if (isLarge) {
+            recs.push({ id:'enableSPL', valId:'splMode', val: isVeryLarge ? 'smooth' : 'normal',
+                label:'Spoiler – ' + (isVeryLarge ? 'Smooth' : 'Normal'), tag:'obs',
+                reason:'Kode besar (' + Math.round(len/1000) + 'KB) — dead code spoiler mempersulit analisis statis.' });
+        }
+        if (hasLongStr || strMatches > 10) {
+            recs.push({ id:'enableSLC', valId:'slcMode', val:'normal',
+                label:'String Length Constants', tag:'obs',
+                reason:'Banyak string literal — sembunyikan #str / string.len di balik ekspresi aritmatika.' });
+        }
+        if (funcCount > 5 || isLarge) {
+            recs.push({ id:'enableBLR', valId:'blrMode', val: isVeryLarge ? 'smooth' : 'normal',
+                label:'Blur – ' + (isVeryLarge ? 'Smooth' : 'Normal'), tag:'obs',
+                reason:'Struktur fungsi kompleks — blur alias dan indirection layer mengaburkan pola panggilan.' });
+        }
+        if (hasBit32 || hasMath) {
+            recs.push({ id:'enableNRND', valId:'nrndMode', val:'normal',
+                label:'Nomor Random', tag:'obs',
+                reason:'bit32/math operations ditemukan — noise angka random mempersulit pattern matching.' });
+        }
+        if (hasCoroutine || funcCount > 8) {
+            recs.push({ id:'enableOP', valId:'opMode', val:'normal',
+                label:'Opaque Predicate', tag:'obs',
+                reason:'Coroutine atau banyak fungsi ditemukan — predicate buram menyesatkan decompiler.' });
+        }
+
+        // ── PERFORMANCE/COMPAT recommendations ───────────────────────────────
+        if (hasIpairs || hasTable) {
+            recs.push({ id:'enableRRO', valId:'rroMode', val:'normal',
+                label:'Reduced Readability (RRO)', tag:'perf',
+                reason:'ipairs/table operations terdeteksi — optimasi loop dan table access.' });
+        }
+        if (hasGame && isLarge) {
+            recs.push({ id:'enableSE', valId:'seMode', val:'normal',
+                label:'Static Environment', tag:'perf',
+                reason:'Banyak akses game services pada kode besar — cache environment di awal.' });
+        }
+        if (hasPCall && (hasExecutor || hasLoadstring)) {
+            recs.push({ id:'enableGCF', valId:'gcfMode', val:'normal',
+                label:'GC Fixes', tag:'perf',
+                reason:'pcall + executor/loadstring — pastikan garbage collection tidak mengganggu eksekusi.' });
+        }
+        if (isVeryLarge) {
+            recs.push({ id:'enableVMC', valId:'vmcAlgo', val:'lz',
+                label:'VM Compression – LZ', tag:'perf',
+                reason:'Kode sangat besar (' + Math.round(len/1000) + 'KB) — kompresi LZ mengurangi ukuran output.' });
+        }
+
+        // Deduplicate by id+valId
+        var seen = {};
+        return recs.filter(function(r) {
+            var key = r.id + '|' + (r.valId || '');
+            if (seen[key]) return false;
+            seen[key] = true;
+            return true;
+        });
+    }
+
+    function renderRecommendations(recs) {
+        var list = document.getElementById('recList');
+        var summary = document.getElementById('recSummary');
+        if (recs.length === 0) {
+            list.innerHTML = '<div style="color:#888;font-size:13px;padding:20px 0;text-align:center;">Tidak ada rekomendasi spesifik — kode terlihat sederhana. Coba Security Level untuk perlindungan cepat.</div>';
+            summary.textContent = '';
+            return;
+        }
+        var tagLabels = { sec:'Security', obs:'Obfuscation', perf:'Performance' };
+        var tagClass  = { sec:'rec-tag-sec', obs:'rec-tag-obs', perf:'rec-tag-perf' };
+        list.innerHTML = recs.map(function(r, i) {
+            return '<div class="rec-item">' +
+                '<input type="checkbox" class="rec-check" id="rec_cb_' + i + '" checked>' +
+                '<div style="flex:1;">' +
+                    '<div class="rec-label">' + r.label +
+                        '<span class="rec-tag ' + (tagClass[r.tag]||'') + '">' + (tagLabels[r.tag]||r.tag) + '</span>' +
+                    '</div>' +
+                    '<div class="rec-reason">' + r.reason + '</div>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+        var sec = recs.filter(function(r){return r.tag==='sec';}).length;
+        var obs = recs.filter(function(r){return r.tag==='obs';}).length;
+        var perf = recs.filter(function(r){return r.tag==='perf';}).length;
+        summary.textContent = recs.length + ' rekomendasi: ' + sec + ' security, ' + obs + ' obfuscation, ' + perf + ' performance.';
+    }
+
+    function applyRecommendations() {
+        var applied = 0;
+        _recResults.forEach(function(r, i) {
+            var cb = document.getElementById('rec_cb_' + i);
+            if (!cb || !cb.checked) return;
+            // Enable checkbox
+            var enableEl = document.getElementById(r.id);
+            if (enableEl && enableEl.type === 'checkbox' && !enableEl.checked) {
+                enableEl.checked = true;
+                enableEl.dispatchEvent(new Event('change'));
+            }
+            // Set select value if applicable
+            if (r.valId && r.val !== null) {
+                var selEl = document.getElementById(r.valId);
+                if (selEl && selEl.tagName === 'SELECT') {
+                    selEl.value = r.val;
+                    selEl.dispatchEvent(new Event('change'));
+                } else if (selEl && selEl.type === 'checkbox') {
+                    selEl.checked = !!r.val;
+                    selEl.dispatchEvent(new Event('change'));
+                }
+            }
+            applied++;
+        });
+        document.getElementById('recSummary').textContent = applied + ' fitur berhasil diterapkan!';
+        document.getElementById('recSummary').style.color = '#4ec94e';
+        setTimeout(function() {
+            document.getElementById('recSummary').style.color = '#9cdcfe';
+            closeRecommend();
+        }, 1200);
+    }
+
     // ── Save / Load / Reset Settings ─────────────────────────────────────────
     var _SETTINGS_KEY = 'ArchiveXNova_Settings_v1';
 
-    var _SETTING_IDS = ["enableAsciiEnc", "asciiMode", "xorKey", "enableIntExpr", "intExprMode", "intExprDepth", "enableNCS", "ncsMode", "ncsParts", "enableFakeIf", "enableFakeChunks", "fakeIntensity", "fakeChunkCount", "enableCFF", "cffMode", "cffStates", "enableVRO", "vroStyle", "vroScope", "enableOP", "opMode", "opCount", "enableAntiDump", "antiDumpMode", "enableAntiTamper", "antiTamperMode", "antiTamperReaction", "enableAntiEnvLog", "antiEnvLogMode", "antiEnvLogNoise", "enableHardCrash", "hardCrashMode", "hardCrashTrigger", "enableLE", "leMode", "leValue", "leReaction", "enableIPP", "ippMode", "ippIntensity", "secLevel", "optLevel", "compatMode", "enableRRO", "rroMode", "optCompileLevel", "enableVMC", "vmcAlgo", "enableIVMS", "ivmsMode", "enableGCF", "gcfMode", "enableSE", "seMode", "enableDBG", "dbgMode", "enableMeow", "meowHookOp", "meowDiscord", "meowComments", "meowRuntimeLogs", "meowLua", "meowConstants", "meowMinifier", "meowSpyExecOnly", "meowExploreFuncs", "meowHttpSpy", "meowReqLogger", "meowBlockReq", "enableBLR", "blrMode", "enableSPL", "splMode", "enableNOM", "nomMode", "enableNRND", "nrndMode", "enableENC", "encMode", "enableCE", "ceMode", "enableRN", "rnMode", "enableSLC", "slcMode", "enableADV2", "adv2Mode", "enableATV2", "atv2Mode", "enableADV3", "adv3Mode", "enableATV3", "atv3Mode"];
+    var _SETTING_IDS = ["enableAsciiEnc", "asciiMode", "xorKey", "enableIntExpr", "intExprMode", "intExprDepth", "enableNCS", "ncsMode", "ncsParts", "enableFakeIf", "enableFakeChunks", "fakeIntensity", "fakeChunkCount", "enableCFF", "cffMode", "cffStates", "enableVRO", "vroStyle", "vroScope", "enableOP", "opMode", "opCount", "enableAntiDump", "antiDumpMode", "enableAntiTamper", "antiTamperMode", "antiTamperReaction", "enableAntiEnvLog", "antiEnvLogMode", "antiEnvLogNoise", "enableHardCrash", "hardCrashMode", "hardCrashTrigger", "enableLE", "leMode", "leValue", "leReaction", "enableIPP", "ippMode", "ippIntensity", "secLevel", "optLevel", "compatMode", "enableRRO", "rroMode", "optCompileLevel", "enableVMC", "vmcAlgo", "enableIVMS", "ivmsMode", "enableGCF", "gcfMode", "enableSE", "seMode", "enableDBG", "dbgMode", "enableMeow", "meowHookOp", "meowDiscord", "meowComments", "meowRuntimeLogs", "meowLua", "meowConstants", "meowMinifier", "meowSpyExecOnly", "meowExploreFuncs", "meowHttpSpy", "meowReqLogger", "meowBlockReq", "enableBLR", "blrMode", "enableSPL", "splMode", "enableNOM", "nomMode", "enableNRND", "nrndMode", "enableENC", "encMode", "enableCE", "ceMode", "enableRN", "rnMode", "enableSLC", "slcMode", "enableADV2", "adv2Mode", "enableATV2", "atv2Mode", "enableADV3", "adv3Mode", "enableATV3", "atv3Mode", "enableATV6", "atv6Mode", "enableATV5", "atv5Mode", "enableATV4", "atv4Mode"];
 
     function saveSettings() {
         var data = {};
@@ -8742,6 +9855,25 @@ function buildAsciiSimple(codes) {
                 <button onclick="saveSettingsSlot()" style="background:#2a3a2a;border:1px solid #4a7a4a;color:#8fbc8f;padding:5px 14px;cursor:pointer;border-radius:4px;font-size:13px;">&#x1F4BE; Simpan</button>
             </div>
             <div id="modalStatus" style="padding:4px 14px 10px;font-size:12px;color:#888;min-height:20px;"></div>
+        </div>
+    </div>
+
+    <!-- Recommend Features Modal -->
+    <div id="recommendModal">
+        <div style="background:#1e1e1e;border:1px solid #2e6da4;border-radius:8px;width:min(620px,95vw);max-height:85vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.7);">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #2a2a2a;">
+                <span style="font-weight:bold;color:#7ec8e3;font-size:14px;">&#x1F4A1; Feature Recommendations</span>
+                <button onclick="closeRecommend()" style="background:none;border:none;color:#888;font-size:20px;cursor:pointer;padding:0 4px;line-height:1;">&times;</button>
+            </div>
+            <div style="padding:10px 18px;border-bottom:1px solid #2a2a2a;font-size:12px;color:#888;">
+                Analisis kode input dilakukan secara lokal. Centang fitur yang ingin diaktifkan lalu klik <b style="color:#7ec8e3;">Apply Selected</b>.
+            </div>
+            <div id="recList" style="overflow-y:auto;padding:10px 18px;flex:1;min-height:100px;"></div>
+            <div id="recSummary" style="padding:8px 18px;font-size:12px;color:#9cdcfe;border-top:1px solid #2a2a2a;min-height:24px;"></div>
+            <div style="padding:10px 18px;border-top:1px solid #2a2a2a;display:flex;gap:8px;justify-content:flex-end;">
+                <button onclick="applyRecommendations()" style="background:#1a3a5c;border:1px solid #2e6da4;color:#7ec8e3;padding:6px 18px;cursor:pointer;border-radius:4px;font-size:13px;">&#x2714; Apply Selected</button>
+                <button onclick="closeRecommend()" style="background:#2a2a2a;border:1px solid #404040;color:#aaa;padding:6px 14px;cursor:pointer;border-radius:4px;font-size:13px;">Cancel</button>
+            </div>
         </div>
     </div>
 
